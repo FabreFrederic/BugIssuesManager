@@ -1,4 +1,4 @@
-package com.fabrefrederic.metier;
+package com.fabrefrederic.business;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

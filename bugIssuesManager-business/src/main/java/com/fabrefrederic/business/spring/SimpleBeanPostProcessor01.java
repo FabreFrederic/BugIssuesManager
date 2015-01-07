@@ -1,10 +1,10 @@
-package com.fabrefrederic.metier.spring;
+package com.fabrefrederic.business.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.annotation.Order;
 
-import com.fabrefrederic.metier.implementationTest.Client;
+import com.fabrefrederic.business.implementationTest.Client;
 
 /**
  * 

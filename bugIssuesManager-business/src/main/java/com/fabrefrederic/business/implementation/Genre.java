@@ -1,4 +1,4 @@
-package com.fabrefrederic.metier.musicManager.implementation;
+package com.fabrefrederic.business.implementation;
 
 import java.io.Serializable;
 

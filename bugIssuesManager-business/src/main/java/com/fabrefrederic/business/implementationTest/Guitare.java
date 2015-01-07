@@ -1,4 +1,4 @@
-package com.fabrefrederic.metier.implementationTest;
+package com.fabrefrederic.business.implementationTest;
 
 import java.io.Serializable;
 
