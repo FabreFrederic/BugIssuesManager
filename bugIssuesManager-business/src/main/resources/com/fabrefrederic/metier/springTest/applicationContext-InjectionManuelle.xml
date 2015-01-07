@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!--
+	L'injection par modificateur :
+	P36
+	On utilise le tag property
+	-->
+
+	<bean id="marque"
+		class="com.fabrefrederic.metier.implementationTest.Marque">
+		<property name="nom">
+			<!-- Spécifie la valeur null -->
+			<!-- Par défaut, la valeur est à null de ttes facons -->
+			<null />
+		</property>
+	</bean>
+
+	<bean id="modele"
+		class="com.fabrefrederic.metier.implementationTest.Modele">
+		<property name="client">
+			<bean class="com.fabrefrederic.metier.implementationTest.Client" />
+		</property>
+	</bean>
+
+	<bean id="guitare"
+		class="com.fabrefrederic.metier.implementationTest.Guitare">
+		<!-- Injection explicite des collaborateurs par le mot clé ref -->
+		<property name="modele" ref="modele"/>
+	</bean>
+
+	<!-- name permet de spécifier un alias -->
+	<bean id="marquePopulated"
+		class="com.fabrefrederic.metier.implementationTest.Marque"
+		name="marquePopulatedAlias">
+		<!-- On peut initialiser des propriétés -->
+		<property name="nom">
+			<value>Toto</value>
+		</property>
+	</bean>
+
+	<bean id="client"
+		class="com.fabrefrederic.metier.implementationTest.Client">
+	</bean>
+
+	<!--
+	Page 72 : transcodeur pour faire la conversion entre la chaîne de caractères et les attributs du type.
+	Permet ici de transformer une string en date
+	-->
+	<bean
+		class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.util.Date" value="com.fabrefrederic.technique.spring.DatePropertyEditor" />
+			</map>
+		</property>
+	</bean>
+</beans>

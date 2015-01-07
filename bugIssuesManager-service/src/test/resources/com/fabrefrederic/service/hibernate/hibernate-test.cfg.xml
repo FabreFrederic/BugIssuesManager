@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<!-- La propriété name permet de spécifier le nom d'une instance de SessionFactory accessible par son nom jndi -->
+    <!-- <session-factory name="HibernateSessionFactory"> -->
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+        <property name="hibernate.connection.url">jdbc:hsqldb:mem:test-musicManager</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+
+		<!-- Définit quelle implémentation de org.hibernate.context.CurrentSessionContext doit être utilisée
+			 Hibernate gère automatiquement le contexte de session
+		-->
+		<property name="current_session_context_class">thread</property>
+
+		<!-- Parametrage du pool de connexion C3P0 -->
+		<property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<!-- En secondes -->
+		<property name="hibernate.c3p0.timeout">100</property>
+		<property name="hibernate.c3p0.max_size">100</property>
+
+		<!-- A METTRE A FALSE POUR LA PRODUCTION -->
+		<!-- Affiche les requete SQL dans la console -->
+		<property name="show_sql">true</property>
+		<!-- Formate les requetes sql dans la console -->
+		<property name="format_sql">true</property>
+		<!--  Ajoute le nom de la classe qui génère la requête SQL -->
+		<property name="use_sql_comments">true</property>
+		<!-- Si activé, Hibernate va collecter des statistiques utiles pour le réglage des performances
+		Il faut utiliser alors statistics.logSummary(); dans une classe java -->
+		<property name="hibernate.generate_statistics">true</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		
+		<!-- Mapping des classes persistantes -->
+		<!-- La couche DAO ne voit pas la couche Métier (dans l'autre sens oui)
+			 On ne peut donc pas utiliser la configuration d'hibernate dans la vue Hibernate
+			 sinon on a une erreur "AnnotationConfiguration instance is required"
+
+			 Pour tester cela, il suffit de deplacer une classe dans la couche DAO
+			 et on voit que cela fonctionne
+			 -->
+		<mapping class="com.fabrefrederic.metier.implementationTest.Modele"/>
+		<mapping class="com.fabrefrederic.metier.implementationTest.Marque"/>
+		<mapping class="com.fabrefrederic.metier.implementationTest.Client"/>
+		<mapping class="com.fabrefrederic.metier.implementationTest.Guitare"/>
+
+		<!-- Utilisation des fichiers de mapping hibernate hbm.xml
+        <mapping resource="com/fabrefrederic/dao/persistance/hibernate/mapping/Guitare.hbm.xml" />
+        <mapping resource="com/fabrefrederic/dao/persistance/hibernate/mapping/Modele.hbm.xml" />
+		-->
+
+    </session-factory>
+</hibernate-configuration>
