@@ -1,8 +1,10 @@
 package com.fabrefrederic.bugIssuesManager.library;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.tmatesoft.svn.core.SVNException;
+import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.io.SVNRepository;
@@ -49,4 +51,16 @@ public class RevisionControlSystem {
         return clientManager;
     }
 
+    private Collection<SVNLogEntry> getLogs(final SVNRepository svnRepository, final long startRevision, final long endRevision) {
+        Collection<SVNLogEntry> logEntries = null;
+        try {
+            logEntries = svnRepository.log(new String[] { "/trunk/js/web/src/main/webapp" }, null, 
+                    startRevision, endRevision, true, true);
+        } catch (final SVNException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return logEntries;
+    }
 }
