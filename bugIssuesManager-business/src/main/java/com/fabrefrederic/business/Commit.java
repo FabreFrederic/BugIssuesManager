@@ -34,9 +34,9 @@ public class Commit implements Serializable {
     @Column(name = "commit_date")
     private Date date;
 
-    /** Commit Developer */
-    @Column(name = "commit_developer")
-    private String developer;
+    /** Commit author */
+    @Column(name = "commit_author")
+    private String author;
 
     /** Issue */
     @Column(name = "commit_issue")
@@ -89,20 +89,6 @@ public class Commit implements Serializable {
     }
 
     /**
-     * @return the developer
-     */
-    public String getDeveloper() {
-        return developer;
-    }
-
-    /**
-     * @param developer the developer to set
-     */
-    public void setDeveloper(String developer) {
-        this.developer = developer;
-    }
-
-    /**
      * @return the issue
      */
     public Issue getIssue() {
@@ -128,5 +114,19 @@ public class Commit implements Serializable {
      */
     public void setFile(File file) {
         this.file = file;
+    }
+
+    /**
+     * @return the author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * @param author the author to set
+     */
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }
