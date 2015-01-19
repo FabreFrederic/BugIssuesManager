@@ -85,39 +85,15 @@
 			<artifactId>slf4j-jdk14</artifactId>
 			<version>${slf4j-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.13</version>
-		</dependency>
-
-		<!-- Because this is a web app, we also have a dependency on the servlet
-			api. -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-		</dependency>
 
 		<dependency>
-			<groupId>com.fabrefrederic.metier</groupId>
-			<artifactId>metier</artifactId>
+			<groupId>com.fabrefrederic.bugIssuesManager.dao</groupId>
+			<artifactId>bugIssuesManager-dao</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-			<version>2.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fabrefrederic.dao</groupId>
-			<artifactId>dao</artifactId>
+			<groupId>com.fabrefrederic.bugIssuesManager.business</groupId>
+			<artifactId>bugIssuesManager-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
