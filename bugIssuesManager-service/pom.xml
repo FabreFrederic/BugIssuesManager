@@ -96,5 +96,10 @@
 			<artifactId>bugIssuesManager-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fabrefrederic.bugIssuesManager.library</groupId>
+			<artifactId>bugIssuesManager-library</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
