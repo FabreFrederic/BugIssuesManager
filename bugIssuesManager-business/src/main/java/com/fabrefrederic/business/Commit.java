@@ -2,7 +2,6 @@ package com.fabrefrederic.business;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +44,7 @@ public class Commit implements Serializable {
 
     /** File committed */
     @Column(name = "commit_file")
-    private List<File> files;
+    private File file;
 
     /**
      * @return the id
@@ -104,6 +103,20 @@ public class Commit implements Serializable {
     }
 
     /**
+     * @return the file
+     */
+    public File getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    /**
      * @return the author
      */
     public String getAuthor() {
@@ -115,19 +128,5 @@ public class Commit implements Serializable {
      */
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    /**
-     * @return the files
-     */
-    public List<File> getFiles() {
-        return files;
-    }
-
-    /**
-     * @param files the files to set
-     */
-    public void setFiles(List<File> files) {
-        this.files = files;
     }
 }

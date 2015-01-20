@@ -1,9 +1,8 @@
 package com.fabrefrederic.library;
 
-import java.util.Collection;
+import java.util.List;
 
-import org.tmatesoft.svn.core.SVNLogEntry;
-
+import com.fabrefrederic.business.Commit;
 
 /**
  *
@@ -11,6 +10,11 @@ import org.tmatesoft.svn.core.SVNLogEntry;
  */
 public interface RevisionControlSystem {
 
-    Collection<SVNLogEntry> getLogs(long startRevision, long endRevision);
-
+    /**
+     *
+     * @param startRevision
+     * @param endRevision
+     * @return
+     */
+    List<Commit> getLogs(final long startRevision, final long endRevision);
 }
