@@ -15,6 +15,7 @@ public interface RevisionControlSystem {
      * @param startRevision
      * @param endRevision
      * @return
+     * @throws Exception
      */
-    List<Commit> getLogs(final long startRevision, final long endRevision);
+    List<Commit> getLogs(final long startRevision, final long endRevision) throws Exception;
 }

@@ -43,7 +43,7 @@ public class Commit implements Serializable {
     @Column(name = "commit_issue")
     private Issue issue;
 
-    /** File committed */
+    /** Files committed */
     @Column(name = "commit_file")
     private List<File> files;
 

@@ -127,8 +127,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.fabrefrederic.metier</groupId>
-			<artifactId>metier</artifactId>
+			<groupId>
+				com.fabrefrederic.bugIssuesManager.business
+			</groupId>
+			<artifactId>bugIssuesManager-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

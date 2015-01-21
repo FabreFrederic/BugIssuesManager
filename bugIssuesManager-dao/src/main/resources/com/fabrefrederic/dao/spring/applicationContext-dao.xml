@@ -23,7 +23,7 @@
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="persistenceUnitName" value="jpaTest" />
-		<property name="packagesToScan" value="com.fabrefrederic.metier" />
+		<property name="packagesToScan" value="com.fabrefrederic.business" />
   		<property name="jpaDialect">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
         </property>
@@ -63,6 +63,6 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
-	<context:component-scan base-package="com.fabrefrederic.dao.persistance" />
+	<context:component-scan base-package="com.fabrefrederic.dao" />
 
 </beans>

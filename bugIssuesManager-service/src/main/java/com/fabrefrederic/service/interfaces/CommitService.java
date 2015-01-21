@@ -1,19 +1,16 @@
 package com.fabrefrederic.service.interfaces;
 
-import java.util.Collection;
 import java.util.List;
-
-import org.tmatesoft.svn.core.SVNLogEntry;
 
 import com.fabrefrederic.business.Commit;
 
-public interface RevisionControlSystemService {
+public interface CommitService {
 
     /**
      *
      * @return
      */
-    Collection<SVNLogEntry> getCommits(long startRevision, long endRevision);
+    List<Commit> getCommits(long startRevision, long endRevision);
 
     /**
      *
