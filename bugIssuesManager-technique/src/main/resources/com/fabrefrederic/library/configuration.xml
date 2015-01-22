@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<codeSource>
-		<url>
-		</url>
+		<url>https://svn.java.net/svn/javaeetutorial~svn</url>
 		<login>
 		</login>
 		<password>
