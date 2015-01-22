@@ -1,5 +1,6 @@
 package com.fabrefrederic.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -18,12 +19,13 @@ public class CommitServiceImpl implements CommitService {
 
     @Override
     public List<Commit> getCommits(final long startRevision, final long endRevision) {
-        List<Commit> commits = null;
+        List<Commit> commits = new ArrayList<Commit>();
         try {
             commits = revisionControlSystem.getLogs(startRevision, endRevision);
         } catch (final Exception e) {
             LOGGER.error(e);
         }
+        LOGGER.debug("Number of commits retrieved : " + commits.size());
         return commits;
     }
 
