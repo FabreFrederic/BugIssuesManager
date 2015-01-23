@@ -3,12 +3,15 @@ package com.fabrefrederic.library.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
@@ -65,29 +68,42 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
 
     // TODO : develop specific exception type
     @Override
-    public List<Commit> getLogs(final long startRevision, final long endRevision) throws Exception {
+    public List<Commit> getLogs(final String path, final long startRevision, final long endRevision) throws Exception {
         if (repository == null) {
+            LOGGER.error("The repository is not instanciate");
             throw new Exception();
         }
-        Collection<SVNLogEntry> logEntries = null;
+        if (StringUtils.isBlank(path)) {
+            LOGGER.error("the svn path must be specified");
+            throw new Exception();
+        }
+
+        Collection<SVNLogEntry> logEntries = new ArrayList<SVNLogEntry>();
+        // The revision is the map id
+        final Map<Long, SVNDirEntry> svnDirEntries = new HashMap<Long, SVNDirEntry>();
         try {
-            logEntries = repository.log(new String[] { "/trunk/js/web/src/main/webapp" }, null,
-                    startRevision, endRevision, true, true);
+            logEntries = repository.log(new String[] { path }, null, startRevision, endRevision, true, true);
+
+            for (final SVNLogEntry svnLogEntry : logEntries) {
+                svnDirEntries.put(svnLogEntry.getRevision(), repository.getDir(path, svnLogEntry.getRevision(), true, null));
+            }
+
         } catch (final SVNException e) {
             LOGGER.error(e);
         } catch (final Exception e) {
             LOGGER.error(e);
         }
-        return convert(logEntries);
+        return convert(logEntries, svnDirEntries);
     }
 
     /**
-     * Converts svnlogs into business objects "commits"
+     * Converts SVNLogEntries and SVNDirEntries and into a list of business objects "commits"
      *
-     * @param svnLogs
-     * @return a list of commits
+     * @param svnLogEntries
+     * @param svnDirEntries
+     * @return a list of populated commits
      */
-    private List<Commit> convert(Collection<SVNLogEntry> svnLogEntries) {
+    private List<Commit> convert(Collection<SVNLogEntry> svnLogEntries, Map<Long, SVNDirEntry> svnDirEntries) {
         final List<Commit> commits = new ArrayList<Commit>();
         for (final SVNLogEntry svnLogEntry : svnLogEntries) {
             // Commit
@@ -98,13 +114,19 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
 
             // File
             final List<File> files = new ArrayList<File>();
-            final Set<Map.Entry<String,SVNLogEntryPath>> entries = svnLogEntry.getChangedPaths().entrySet();
+            final Set<Map.Entry<String, SVNLogEntryPath>> entries = svnLogEntry.getChangedPaths().entrySet();
             for (final Entry<String, SVNLogEntryPath> entry : entries) {
                 final File file = new File();
                 file.setPath(entry.getKey());
                 files.add(file);
             }
             commit.setFiles(files);
+
+            // Comment message
+            final SVNDirEntry svnDirEntry = svnDirEntries.get((svnLogEntry).getRevision());
+            if (svnDirEntry != null) {
+                commit.setMessage(svnDirEntry.getCommitMessage());
+            }
             commits.add(commit);
         }
         return commits;

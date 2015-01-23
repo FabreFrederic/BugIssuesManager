@@ -18,10 +18,10 @@ public class CommitServiceImpl implements CommitService {
     private RevisionControlSystem revisionControlSystem;
 
     @Override
-    public List<Commit> getCommits(final long startRevision, final long endRevision) {
+    public List<Commit> getCommits(final String path, final long startRevision, final long endRevision) {
         List<Commit> commits = new ArrayList<Commit>();
         try {
-            commits = revisionControlSystem.getLogs(startRevision, endRevision);
+            commits = revisionControlSystem.getLogs(path, startRevision, endRevision);
         } catch (final Exception e) {
             LOGGER.error(e);
         }
@@ -40,5 +40,4 @@ public class CommitServiceImpl implements CommitService {
     public void setRevisionControlSystem(RevisionControlSystem revisionControlSystem) {
         this.revisionControlSystem = revisionControlSystem;
     }
-
 }

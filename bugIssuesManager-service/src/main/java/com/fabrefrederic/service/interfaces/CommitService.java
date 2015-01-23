@@ -8,14 +8,16 @@ public interface CommitService {
 
     /**
      *
-     * @return
+     * @param commits
      */
-    List<Commit> getCommits(long startRevision, long endRevision);
+    // TODO : comment
+    List<Commit> getCommits(String path, long startRevision, long endRevision);
 
     /**
      *
      * @param commits
      */
+    // TODO : comment
     void saveCommits(List<Commit> commits);
 
 }
