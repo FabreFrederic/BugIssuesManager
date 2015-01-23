@@ -34,4 +34,11 @@ public class CommitServiceImpl implements CommitService {
 
     }
 
+    /**
+     * @param revisionControlSystem the revisionControlSystem to set
+     */
+    public void setRevisionControlSystem(RevisionControlSystem revisionControlSystem) {
+        this.revisionControlSystem = revisionControlSystem;
+    }
+
 }

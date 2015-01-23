@@ -19,4 +19,10 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         super(persistentClass);
     }
 
+    /**
+     * Default constructor
+     */
+    public CommitDaoHibernate() {
+        super();
+    }
 }

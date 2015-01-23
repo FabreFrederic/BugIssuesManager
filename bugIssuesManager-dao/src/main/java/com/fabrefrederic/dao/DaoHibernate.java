@@ -28,6 +28,11 @@ public abstract class DaoHibernate<T extends Serializable> implements GenericDao
     protected EntityManager entityManager;
 
     /**
+     * Default constructor
+     */
+    public DaoHibernate() {}
+
+    /**
      * Constructor
      */
     public DaoHibernate(Class<T> persistentClass) {

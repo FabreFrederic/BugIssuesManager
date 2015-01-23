@@ -9,7 +9,7 @@
 	<import resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
 	
 	<bean id="commitService"
-		class="com.fabrefrederic.service.CommitService">
+		class="com.fabrefrederic.service.CommitServiceImpl">
 		<property name="revisionControlSystem" ref="revisionControlSystem" />
 	</bean>
 

@@ -40,7 +40,11 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
      * @throws IOException
      */
     public SvnRevisionControlSystem(final String url, final String username, final String password) throws IOException {
+        LOGGER.debug("url : " + url);
+        LOGGER.debug("username : " + username);
+        LOGGER.debug("password : " + password);
         SVNURL svnUrl = null;
+
         try {
             svnUrl = SVNURL.parseURIEncoded(url);
         } catch (final SVNException e) {

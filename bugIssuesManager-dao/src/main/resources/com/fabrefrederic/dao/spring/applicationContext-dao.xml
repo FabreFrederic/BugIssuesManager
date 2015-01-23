@@ -9,7 +9,7 @@
 
 	<!-- Here we specify where to find our property file -->
 	<context:property-placeholder
-		location="classpath:com/fabrefrederic/dao/persistance/model.properties" />
+		location="classpath:com/fabrefrederic/dao/model.properties" />
 
 	<!-- Déclaration de l'entity manager -->
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />

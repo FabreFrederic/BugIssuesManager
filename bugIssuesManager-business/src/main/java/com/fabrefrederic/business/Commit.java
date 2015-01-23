@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -44,7 +45,9 @@ public class Commit implements Serializable {
     private Issue issue;
 
     /** Files committed */
-    @Column(name = "commit_file")
+    // TODO : Modify the mapping
+    //@Column(name = "commit_file")
+    @Transient
     private List<File> files;
 
     /**
