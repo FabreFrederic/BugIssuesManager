@@ -1,6 +1,7 @@
 package com.fabrefrederic.library.impl;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -66,16 +67,15 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
         clientManager = SVNClientManager.newInstance(option, authenticationManager);
     }
 
-    // TODO : develop specific exception type
     @Override
     public List<Commit> getLogs(final String path, final long startRevision, final long endRevision) throws Exception {
         if (repository == null) {
             LOGGER.error("The repository is not instanciate");
-            throw new Exception();
+            throw new Exception("The repository is not instanciate");
         }
         if (StringUtils.isBlank(path)) {
             LOGGER.error("the svn path must be specified");
-            throw new Exception();
+            throw new InvalidParameterException("the svn path must be specified");
         }
 
         Collection<SVNLogEntry> logEntries = new ArrayList<SVNLogEntry>();
@@ -90,14 +90,29 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
 
         } catch (final SVNException e) {
             LOGGER.error(e);
+            throw new Exception("Error while getting svn logs", e);
         } catch (final Exception e) {
             LOGGER.error(e);
+            throw new Exception(e);
         }
         return convert(logEntries, svnDirEntries);
     }
 
+    @Override
+    public List<Commit> getLogsToTheLastRevision(final String path, final long startRevision) throws Exception {
+        if (repository == null) {
+            LOGGER.error("The repository is not instanciate");
+            throw new Exception("The repository is not instanciate");
+        }
+        if (StringUtils.isBlank(path)) {
+            LOGGER.error("the svn path must be specified");
+            throw new InvalidParameterException("the svn path must be specified");
+        }
+        return this.getLogs(path, startRevision, repository.getLatestRevision());
+    }
+    
     /**
-     * Converts SVNLogEntries and SVNDirEntries and into a list of business objects "commits"
+     * Converts SVNLogEntries and SVNDirEntries into a list of business objects "commits"
      *
      * @param svnLogEntries
      * @param svnDirEntries

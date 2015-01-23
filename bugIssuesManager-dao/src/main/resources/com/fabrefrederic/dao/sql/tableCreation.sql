@@ -9,13 +9,14 @@ ALTER TABLE file
 ALTER COLUMN file_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
 
+-- commit_file int8 not null,
 create table commit (
     commit_id int8 not null,
     commit_number varchar(255),
     commit_date timestamp with time zone,
-    commit_developer varchar(80),
+    commit_author varchar(80),
     commit_issue int8,
-    commit_file int8 not null,
+    commit_message varchar(255),
     primary key (commit_id)
 );
 
