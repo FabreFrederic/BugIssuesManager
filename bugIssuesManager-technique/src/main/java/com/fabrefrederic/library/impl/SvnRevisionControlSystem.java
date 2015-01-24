@@ -26,6 +26,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.fabrefrederic.business.Commit;
 import com.fabrefrederic.business.File;
+import com.fabrefrederic.business.Issue;
 import com.fabrefrederic.library.RevisionControlSystem;
 
 public class SvnRevisionControlSystem implements RevisionControlSystem {
@@ -120,6 +121,7 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
      */
     private List<Commit> convert(Collection<SVNLogEntry> svnLogEntries, Map<Long, SVNDirEntry> svnDirEntries) {
         final List<Commit> commits = new ArrayList<Commit>();
+        
         for (final SVNLogEntry svnLogEntry : svnLogEntries) {
             // Commit
             final Commit commit = new Commit();
@@ -137,13 +139,45 @@ public class SvnRevisionControlSystem implements RevisionControlSystem {
             }
             commit.setFiles(files);
 
-            // Comment message
+            // Comment
             final SVNDirEntry svnDirEntry = svnDirEntries.get((svnLogEntry).getRevision());
             if (svnDirEntry != null) {
-                commit.setMessage(svnDirEntry.getCommitMessage());
+            	String comment = svnDirEntry.getCommitMessage();
+                commit.setMessage(comment);
+                String issueName = getIssueNameFromComment(comment);
+                if (StringUtils.isNotBlank(issueName)) {
+                	// Issue
+                	Issue issue = new Issue();
+                	issue.setName(issueName);
+                	commit.setIssue(issue);
+                }
             }
+            
             commits.add(commit);
         }
         return commits;
+    }
+    
+    /**
+     * 
+     * @param comment
+     * @return
+     */
+    private String getIssueNameFromComment(String comment) {
+    	
+    	final String ISSUE_TAG = "AIC-";
+    	StringBuilder issueName = new StringBuilder();
+    	
+        if (StringUtils.isNotBlank(comment)) {
+        	int begin = comment.indexOf(ISSUE_TAG);
+        	for (int i = begin; i < comment.length(); i++){
+        	    String c = comment[i];
+        	    if (StringUtils.isNumeric(c)) {
+        	    	issueName.append(c);
+        	    }
+        	}
+        }
+        
+    	return issueName.toString();
     }
 }
