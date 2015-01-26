@@ -21,15 +21,15 @@ public class SvnRevisionControlSystemTest {
 	@Test
 	public void getIssueNameFromCommentTest() {
 		 String comment = "AIC-100 : here is my comment issue";
-		 String result = revisionControlSystem.getIssueNameFromComment(comment);
+		 String result = revisionControlSystem.extractIssueNameFromMessage(comment);
 		System.out.println(result);
 		
 		comment = "AIC-12345: here is my comment issue";
-		result = revisionControlSystem.getIssueNameFromComment(comment);
+		result = revisionControlSystem.extractIssueNameFromMessage(comment);
 		System.out.println(result);
 		
 		comment = " here is my comment issue - AIC-9876";
-		result = revisionControlSystem.getIssueNameFromComment(comment);
+		result = revisionControlSystem.extractIssueNameFromMessage(comment);
 		System.out.println(result);
 	}
 }

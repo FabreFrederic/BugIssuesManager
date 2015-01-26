@@ -7,20 +7,21 @@ import com.fabrefrederic.library.RevisionControlSystem;
 public abstract class AbstractRevisionControlSystem implements RevisionControlSystem {
 
 	/**
-	 * 
-	 * @param comment
-	 * @return
+	 * Extracts the issue name from the commit message
+	 *
+	 * @param commit message
+	 * @return the issue name
 	 */
-	public String getIssueNameFromComment(String comment) {
+	public String extractIssueNameFromMessage(String message) {
 		final StringBuilder issueName = new StringBuilder();
-		if (StringUtils.isNotBlank(comment)) {
+		if (StringUtils.isNotBlank(message)) {
 			final String ISSUE_TAG = "AIC-";
-			int begin = comment.indexOf(ISSUE_TAG);
+			final int begin = message.indexOf(ISSUE_TAG);
 			if (begin != -1) {
 				// The tag issue is found
 				issueName.append(ISSUE_TAG);
-				for (int i = begin + ISSUE_TAG.length(); i < comment.length(); i++) {
-					String a = Character.toString(comment.charAt(i));
+				for (int i = begin + ISSUE_TAG.length(); i < message.length(); i++) {
+					final String a = Character.toString(message.charAt(i));
 					if (StringUtils.isNumeric(a)) {
 						issueName.append(a);
 					}

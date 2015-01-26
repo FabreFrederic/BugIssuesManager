@@ -4,14 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -19,136 +22,135 @@ import org.springframework.stereotype.Component;
 @Table(name = "commit")
 @Component("commit")
 public class Commit implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /** Id */
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bugIssuesManager_id_seq")
-    @SequenceGenerator(name = "bugIssuesManager_id_seq", sequenceName = "bugIssuesManager_id_seq", allocationSize = 1)
-    @Column(name = "commit_id")
-    private Long id;
+	/** Id */
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bugIssuesManager_id_seq")
+	@SequenceGenerator(name = "bugIssuesManager_id_seq", sequenceName = "bugIssuesManager_id_seq", allocationSize = 1)
+	@Column(name = "commit_id")
+	private int id;
 
-    /** Commit number */
-    @Column(name = "commit_number")
-    private String number;
+	/** Commit number */
+	@Column(name = "commit_number")
+	private String number;
 
-    /** Commit date */
-    @Column(name = "commit_date")
-    private Date date;
+	/** Commit date */
+	@Column(name = "commit_date")
+	private Date date;
 
-    /** Commit author */
-    @Column(name = "commit_author")
-    private String author;
+	/** Commit author */
+	@Column(name = "commit_author")
+	private String author;
 
-    /** Commit message */
-    @Column(name="commit_message")
-    private String message;
+	/** Commit message */
+	@Column(name="commit_message")
+	private String message;
 
-    /** Issue */
-    @Column(name = "commit_issue")
-    private Issue issue;
+	/** Issue */
+	@Column(name = "commit_issue")
+	private Issue issue;
 
-    /** Files committed */
-    // TODO : Modify the mapping
-    //@Column(name = "commit_file")
-    @Transient
-    private List<File> files;
+	/** Files committed */
+	@ManyToMany(targetEntity = File.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "commit_file", joinColumns = @JoinColumn(name = "commit_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
+	private List<File> files;
 
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
+	/**
+	 * @return the number
+	 */
+	public String getNumber() {
+		return number;
+	}
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+	/**
+	 * @param number the number to set
+	 */
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
-    /**
-     * @return the number
-     */
-    public String getNumber() {
-        return number;
-    }
+	/**
+	 * @return the date
+	 */
+	public Date getDate() {
+		return date;
+	}
 
-    /**
-     * @param number the number to set
-     */
-    public void setNumber(String number) {
-        this.number = number;
-    }
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    /**
-     * @return the date
-     */
-    public Date getDate() {
-        return date;
-    }
+	/**
+	 * @return the issue
+	 */
+	public Issue getIssue() {
+		return issue;
+	}
 
-    /**
-     * @param date the date to set
-     */
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	/**
+	 * @param issue the issue to set
+	 */
+	public void setIssue(Issue issue) {
+		this.issue = issue;
+	}
 
-    /**
-     * @return the issue
-     */
-    public Issue getIssue() {
-        return issue;
-    }
+	/**
+	 * @return the author
+	 */
+	public String getAuthor() {
+		return author;
+	}
 
-    /**
-     * @param issue the issue to set
-     */
-    public void setIssue(Issue issue) {
-        this.issue = issue;
-    }
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
+	}
 
-    /**
-     * @return the author
-     */
-    public String getAuthor() {
-        return author;
-    }
+	/**
+	 * @return the files
+	 */
+	public List<File> getFiles() {
+		return files;
+	}
 
-    /**
-     * @param author the author to set
-     */
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+	/**
+	 * @param files the files to set
+	 */
+	public void setFiles(List<File> files) {
+		this.files = files;
+	}
 
-    /**
-     * @return the files
-     */
-    public List<File> getFiles() {
-        return files;
-    }
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
 
-    /**
-     * @param files the files to set
-     */
-    public void setFiles(List<File> files) {
-        this.files = files;
-    }
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    /**
-     * @return the message
-     */
-    public String getMessage() {
-        return message;
-    }
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
 
-    /**
-     * @param message the message to set
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
 }

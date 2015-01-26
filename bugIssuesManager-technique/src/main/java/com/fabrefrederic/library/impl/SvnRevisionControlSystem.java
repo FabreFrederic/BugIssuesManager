@@ -2,8 +2,6 @@ package com.fabrefrederic.library.impl;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,7 +27,6 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 import com.fabrefrederic.business.Commit;
 import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.Issue;
-import com.fabrefrederic.library.RevisionControlSystem;
 
 public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 	private static final Logger LOGGER = Logger
@@ -66,11 +63,9 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 		}
 
 		final ISVNOptions option = SVNWCUtil.createDefaultOptions(true);
-		final ISVNAuthenticationManager authenticationManager = SVNWCUtil
-				.createDefaultAuthenticationManager(username, password);
+		final ISVNAuthenticationManager authenticationManager = SVNWCUtil.createDefaultAuthenticationManager(username, password);
 		repository.setAuthenticationManager(authenticationManager);
-		clientManager = SVNClientManager.newInstance(option,
-				authenticationManager);
+		clientManager = SVNClientManager.newInstance(option, authenticationManager);
 	}
 
 	@Override
@@ -82,20 +77,17 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 		}
 		if (StringUtils.isBlank(path)) {
 			LOGGER.error("the svn path must be specified");
-			throw new InvalidParameterException(
-					"the svn path must be specified");
+			throw new InvalidParameterException("the svn path must be specified");
 		}
 
 		Collection<SVNLogEntry> logEntries = new ArrayList<SVNLogEntry>();
 		// The revision is the map id
 		final Map<Long, SVNDirEntry> svnDirEntries = new HashMap<Long, SVNDirEntry>();
 		try {
-			logEntries = repository.log(new String[] { path }, null,
-					startRevision, endRevision, true, true);
+			logEntries = repository.log(new String[] { path }, null, startRevision, endRevision, true, true);
 
 			for (final SVNLogEntry svnLogEntry : logEntries) {
-				svnDirEntries.put(svnLogEntry.getRevision(), repository.getDir(
-						path, svnLogEntry.getRevision(), true, null));
+				svnDirEntries.put(svnLogEntry.getRevision(), repository.getDir(path, svnLogEntry.getRevision(), true, null));
 			}
 
 		} catch (final SVNException e) {
@@ -120,8 +112,7 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 			throw new InvalidParameterException(
 					"the svn path must be specified");
 		}
-		return this
-				.getLogs(path, startRevision, repository.getLatestRevision());
+		return getLogs(path, startRevision, repository.getLatestRevision());
 	}
 
 	/**
@@ -145,8 +136,7 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 
 			// File
 			final List<File> files = new ArrayList<File>();
-			final Set<Map.Entry<String, SVNLogEntryPath>> entries = svnLogEntry
-					.getChangedPaths().entrySet();
+			final Set<Map.Entry<String, SVNLogEntryPath>> entries = svnLogEntry.getChangedPaths().entrySet();
 			for (final Entry<String, SVNLogEntryPath> entry : entries) {
 				final File file = new File();
 				file.setPath(entry.getKey());
@@ -154,16 +144,15 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
 			}
 			commit.setFiles(files);
 
-			// Comment
-			final SVNDirEntry svnDirEntry = svnDirEntries.get((svnLogEntry)
-					.getRevision());
+			// Commit message
+			final SVNDirEntry svnDirEntry = svnDirEntries.get((svnLogEntry).getRevision());
 			if (svnDirEntry != null) {
-				String comment = svnDirEntry.getCommitMessage();
-				commit.setMessage(comment);
-				String issueName = this.getIssueNameFromComment(comment);
+				final String message = svnDirEntry.getCommitMessage();
+				commit.setMessage(message);
+				final String issueName = super.extractIssueNameFromMessage(message);
 				if (StringUtils.isNotBlank(issueName)) {
 					// Issue
-					Issue issue = new Issue();
+					final Issue issue = new Issue();
 					issue.setName(issueName);
 					commit.setIssue(issue);
 				}

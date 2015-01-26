@@ -1,3 +1,4 @@
+-- File
 create table file (
     file_id int8 not null,
     file_name varchar(255),
@@ -9,7 +10,7 @@ ALTER TABLE file
 ALTER COLUMN file_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
 
--- commit_file int8 not null,
+-- Commit
 create table commit (
     commit_id int8 not null,
     commit_number varchar(255),
@@ -24,6 +25,14 @@ ALTER TABLE commit
 ALTER COLUMN commit_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
 
+-- Commit file
+create table commit_file (
+    commit_id int8 not null,
+    file_id int8 not null,
+    primary key (commit_id, file_id)
+);
+
+-- Issue
 create table issue (
     issue_id int8 not null,
     issue_name varchar(10),
@@ -34,3 +43,4 @@ create table issue (
 ALTER TABLE issue
 ALTER COLUMN issue_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
+
