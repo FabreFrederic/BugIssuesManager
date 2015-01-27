@@ -7,15 +7,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.dao.interfaces.CommitDao;
 import com.fabrefrederic.library.RevisionControlSystem;
 import com.fabrefrederic.service.interfaces.CommitService;
 
 public class CommitServiceImpl implements CommitService {
     private static final Logger LOGGER = Logger.getLogger(CommitService.class);
 
-    /** */
     @Autowired
     private RevisionControlSystem revisionControlSystem;
+    @Autowired
+    private CommitDao commitDao;
 
     @Override
     public List<Commit> getCommits(final String path, final long startRevision, final long endRevision) {
@@ -31,7 +33,9 @@ public class CommitServiceImpl implements CommitService {
 
     @Override
     public void saveCommits(final List<Commit> commits) {
-
+        for (final Commit commit : commits) {
+            commitDao.save(commit);
+        }
     }
 
     /**
@@ -40,4 +44,12 @@ public class CommitServiceImpl implements CommitService {
     public void setRevisionControlSystem(RevisionControlSystem revisionControlSystem) {
         this.revisionControlSystem = revisionControlSystem;
     }
+
+    /**
+     * @param commitDao the commitDao to set
+     */
+    public void setCommitDao(CommitDao commitDao) {
+        this.commitDao = commitDao;
+    }
+
 }

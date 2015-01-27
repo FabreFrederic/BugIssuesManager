@@ -13,44 +13,34 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fabrefrederic.business.Commit;
-import com.fabrefrederic.business.File;
-import com.fabrefrederic.dao.interfaces.CommitDao;
 import com.fabrefrederic.service.interfaces.CommitService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/com/fabrefrederic/service/spring/applicationContext-service.xml",
 "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml"})
 public class CommitServiceTest {
-	private static final Logger LOGGER = Logger.getLogger(CommitServiceTest.class);
-	@Autowired
-	private CommitService commitService;
-	@Autowired
-	private CommitDao commitDao;
+    private static final Logger LOGGER = Logger.getLogger(CommitServiceTest.class);
+    @Autowired
+    private CommitService commitService;
 
-	@Test
-	public void getAllCommit() {
-		LOGGER.debug("getAllCommit - begin");
-		final List<Commit> commits = commitService.getCommits("/trunk/", 1, 5);
+    @Test
+    public void getAllCommit() {
+        LOGGER.debug("getAllCommit - begin");
+        final List<Commit> commits = commitService.getCommits("/trunk/", 1, 5);
+        commitService.saveCommits(commits);
 
-		for (final Commit commit : commits) {
-			try {
-				commitDao.save(commit);}
-			catch (final Exception e) {
-				System.out.println(e);
-			}
-
-			System.out.println(commit.getNumber());
-			System.out.println("author : " + commit.getAuthor());
-			System.out.println("date : " + commit.getDate());
-			System.out.println("message : " + commit.getMessage());
-			if (commit.getFiles() != null) {
-				final List<File> files = commit.getFiles();
-				for (final File file : files) {
-					System.out.println("name : " + file.getName());
-					System.out.println("path : " + file.getPath());
-				}
-			}
-		}
-		commitDao.flush();
-	}
+        //        for (final Commit commit : commits) {
+        //            System.out.println(commit.getNumber());
+        //            System.out.println("author : " + commit.getAuthor());
+        //            System.out.println("date : " + commit.getDate());
+        //            System.out.println("message : " + commit.getMessage());
+        //            if (commit.getFiles() != null) {
+        //                final List<File> files = commit.getFiles();
+        //                for (final File file : files) {
+        //                    System.out.println("name : " + file.getName());
+        //                    System.out.println("path : " + file.getPath());
+        //                }
+        //            }
+        //        }
+    }
 }
