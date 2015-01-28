@@ -6,7 +6,7 @@
 		<artifactId>bugIssuesManager-maven</artifactId>
 		<groupId>com.fabrefrederic</groupId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../bugIssuesManager-maven/pom.xml</relativePath>
+		<relativePath>../bugIssuesManager-maven</relativePath>
 	</parent>
 
 	<groupId>com.fabrefrederic.bugIssuesManager.library</groupId>

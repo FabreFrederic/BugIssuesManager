@@ -5,6 +5,7 @@
 		<groupId>com.fabrefrederic</groupId>
 		<artifactId>bugIssuesManager-maven</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../bugIssuesManager-maven</relativePath>
 	</parent>
 	<groupId>com.fabrefrederic.bugIssuesManager.integrationTest</groupId>
 	<artifactId>bugIssuesManager-integrationTest</artifactId>

@@ -9,11 +9,19 @@
 	<packaging>pom</packaging>
 	<name>bugIssuesManager-maven</name>
 
+	<modules>
+		<module>../bugIssuesManager-business</module>
+		<module>../bugIssuesManager-dao</module>
+		<module>../bugIssuesManager-integrationTest</module>
+		<module>../bugIssuesManager-technique</module>
+		<module>../bugIssuesManager-presentation</module>
+		<module>../bugIssuesManager-service</module>
+	</modules>
+	
 	<properties>
 		<my.build.directory>target</my.build.directory>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-
 		<hibernate-core-version>4.3.5.Final</hibernate-core-version>
 		<spring-version>4.0.3.RELEASE</spring-version>
 		<slf4j-version>1.5.8</slf4j-version>
