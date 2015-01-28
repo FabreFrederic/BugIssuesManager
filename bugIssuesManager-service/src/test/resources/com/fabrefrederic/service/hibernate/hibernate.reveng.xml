@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
-
-<hibernate-reverse-engineering>
-  <table-filter match-catalog="mabasededonnees" match-name="client"/>
-  <table-filter match-catalog="mabasededonnees" match-name="marque"/>
-  <table-filter match-catalog="mabasededonnees" match-name="modele"/>
-</hibernate-reverse-engineering>
