@@ -15,6 +15,15 @@ public interface CommitService {
 
     /**
      *
+     * @param path
+     * @param startRevision
+     * @return
+     */
+    // TODO : comment
+    List<Commit> getCommitsToTheLastRevision(String path, long startRevision);
+
+    /**
+     *
      * @param commits
      */
     // TODO : comment

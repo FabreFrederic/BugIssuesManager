@@ -17,7 +17,7 @@ create table commit (
     commit_date timestamp with time zone,
     commit_author varchar(80),
     commit_issue_id integer,
-    commit_message varchar(255),
+    commit_message varchar(1000),
     primary key (commit_id)
 );
 ALTER TABLE commit

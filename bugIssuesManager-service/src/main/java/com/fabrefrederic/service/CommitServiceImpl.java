@@ -38,6 +38,18 @@ public class CommitServiceImpl implements CommitService {
         }
     }
 
+    @Override
+    public List<Commit> getCommitsToTheLastRevision(String path, long startRevision) {
+        List<Commit> commits = new ArrayList<Commit>();
+        try {
+            commits = revisionControlSystem.getLogsToTheLastRevision(path, startRevision);
+        } catch (final Exception e) {
+            LOGGER.error(e);
+        }
+        LOGGER.debug("Number of commits retrieved : " + commits.size());
+        return commits;
+    }
+
     /**
      * @param revisionControlSystem the revisionControlSystem to set
      */

@@ -25,6 +25,5 @@ public interface RevisionControlSystem {
      * @return a list of {@code Commit}
      * @throws Exception
      */
-	List<Commit> getLogsToTheLastRevision(String path, long startRevision)
-			throws Exception;
+    List<Commit> getLogsToTheLastRevision(String path, long startRevision) throws Exception;
 }

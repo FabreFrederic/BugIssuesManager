@@ -83,7 +83,7 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
         // The revision is the map id
         final Map<Long, SVNDirEntry> svnDirEntries = new HashMap<Long, SVNDirEntry>();
         try {
-            logEntries = repository.log(new String[] { path }, null, startRevision, endRevision, true, true);
+            logEntries = repository.log(new String[] { path }, null, startRevision, endRevision, false, false);
 
             for (final SVNLogEntry svnLogEntry : logEntries) {
                 svnDirEntries.put(svnLogEntry.getRevision(),
@@ -138,7 +138,8 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
                 final String fileName = getFileNameFromPath(entry.getKey());
                 if (fileName != null) {
                     final File file = new File();
-                    file.setPath(fileName);
+                    file.setName(fileName);
+                    file.setPath(entry.getKey());
                     files.add(file);
                 }
             }
