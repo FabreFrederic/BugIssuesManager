@@ -13,7 +13,7 @@ ALTER TABLE file OWNER TO fred;
 -- Commit
 create table commit (
     commit_id integer not null,
-    commit_number varchar(255),
+    commit_number varchar(255) unique,
     commit_date timestamp with time zone,
     commit_author varchar(80),
     commit_issue_id integer,
