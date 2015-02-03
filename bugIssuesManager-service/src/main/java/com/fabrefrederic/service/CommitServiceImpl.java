@@ -64,4 +64,10 @@ public class CommitServiceImpl implements CommitService {
         this.commitDao = commitDao;
     }
 
+    @Override
+    public Commit getTheLastSavedCommit() {
+        final Commit commit = commitDao.findTheMostRecentCommit();
+        return commit;
+    }
+
 }

@@ -22,6 +22,14 @@ public interface CommitService {
     // TODO : comment
     List<Commit> getCommitsToTheLastRevision(String path, long startRevision);
 
+
+    /**
+     * Gets the last commit saved in DB
+     *
+     * @return commit
+     */
+    Commit getTheLastSavedCommit();
+
     /**
      *
      * @param commits
