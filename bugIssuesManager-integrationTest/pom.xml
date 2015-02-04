@@ -37,7 +37,7 @@
 			<id>postgres-it</id>
 			<properties>
 				<sql.scripts.dir>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/sql</sql.scripts.dir>
-				<configFile>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/configFile.properties</configFile>
+				<configFile>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/model.properties</configFile>
 			</properties>
 			<build>
 				<plugins>
@@ -70,7 +70,7 @@
 									<alias>db</alias>
 									<name>fabrefrederic/postgrestest1</name>
 									<run>
-										<!-- Assign dynamically mapped ports to maven variables (which 
+										<!-- Assign dynamically mapped ports to maven variables (which
 											can be reused in integration tests) -->
 										<ports>
 											<port>jdbc.url.port:5432</port>

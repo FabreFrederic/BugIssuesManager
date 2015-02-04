@@ -38,7 +38,7 @@ public class Commit implements Serializable {
 
     /** Commit date */
     @Column(name = "commit_date")
-    private Date date;
+    public Date date;
 
     /** Commit author */
     @Column(name = "commit_author")

@@ -4,7 +4,6 @@ package com.fabrefrederic.dao;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.business.Commit_;
 import com.fabrefrederic.dao.interfaces.CommitDao;
 
 @Component("CommitDaoHibernate")
@@ -56,16 +56,21 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         if (StringUtils.isBlank(commitNumber)) {
             throw new IllegalArgumentException("A commit number must be set");
         }
-        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        final CriteriaQuery<Commit> criteriaQuery = criteriaBuilder.createQuery(Commit.class);
-        final Root<Commit> root = criteriaQuery.from(Commit.class);
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> query = builder.createQuery(Commit.class);
+        final Root<Commit> root = query.from(Commit.class);
 
-        criteriaQuery.select(root);
-        final TypedQuery<Commit> typeQuery = getEntityManager().createQuery(criteriaQuery);
-        final ParameterExpression<String> param = criteriaBuilder.parameter(String.class);
+        query.select(root);
+        final ParameterExpression<String> param = builder.parameter(String.class);
+        final TypedQuery<Commit> typeQuery = getEntityManager().createQuery(query);
         typeQuery.setParameter(param, commitNumber);
 
-        commitResult = typeQuery.getSingleResult();
+        try {
+            commitResult = typeQuery.getSingleResult();
+        }
+        catch (final Exception exception) {
+            LOGGER.error(exception);
+        }
         if (commitResult != null) {
             LOGGER.debug("A commit has been found with the commit number : " + commitNumber);
         }
@@ -73,22 +78,27 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
             LOGGER.debug("No commit found with the commit number : " + commitNumber);
         }
         return commitResult;
-
     }
 
     @Override
     public Commit findTheMostRecentCommit() {
-        final Commit commitResult = null;
+        Commit commitResult = null;
 
-        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-        final CriteriaQuery<Commit> criteriaQuery = criteriaBuilder.createQuery(Commit.class);
-        final Root<Commit> root = criteriaQuery.from(Commit.class);
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> query = builder.createQuery(Commit.class);
 
-        final Expression<Object> minExpression = criteriaBuilder.min(root.get("date"));
-        final CriteriaQuery<Object> select = criteriaQuery.select(minExpression);
+        final Root<Commit> from = query.from(Commit.class);
+        query.where(builder.isNotNull(from.get(Commit_.date)));
+        query.select(from);
+        query.orderBy(builder.desc(from.get(Commit_.date)));
 
-        final TypedQuery<Commit> typeQuery = getEntityManager().createQuery(criteriaQuery);
-        commitResult = typeQuery.getSingleResult();
+        final TypedQuery<Commit> typeQuery = getEntityManager().createQuery(query);
+        try {
+            commitResult = typeQuery.getSingleResult();
+        }
+        catch (final Exception exception) {
+            LOGGER.error(exception);
+        }
 
         if (commitResult != null) {
             LOGGER.debug("A commit has been found");
@@ -97,6 +107,5 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
             LOGGER.debug("No commit found");
         }
         return commitResult;
-
     }
 }
