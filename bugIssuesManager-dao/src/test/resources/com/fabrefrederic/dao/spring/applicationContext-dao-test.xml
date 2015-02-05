@@ -19,9 +19,9 @@
 	<bean
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-	<!-- Usually, JPA defines a persistence unit through the META-INF/persistence.xml 
-		file. Starting with Spring 3.1, this XML file is no longer necessary – the 
-		LocalContainerEntityManagerFactoryBean now supports a ‘packagesToScan’ property 
+	<!-- Usually, JPA defines a persistence unit through the META-INF/persistence.xml
+		file. Starting with Spring 3.1, this XML file is no longer necessary – the
+		LocalContainerEntityManagerFactoryBean now supports a ‘packagesToScan’ property
 		where the packages to scan for @Entity classes can be specified. -->
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -61,8 +61,8 @@
 
 	<jdbc:embedded-database id="dataSource" type="HSQL">
 		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/databaseCreation.sql" />
-<!-- 		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/tableCreation.sql" />
-		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/population.sql" /> -->
+ 		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/tableCreation.sql" />
+		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/population.sql" />
 	</jdbc:embedded-database>
 
 	<context:component-scan base-package="com.fabrefrederic.dao" />
