@@ -19,19 +19,22 @@
 		<level value="trace" />
 		<appender-ref ref="console" />
 	</logger>
-
 	<logger name="org.hibernate.type" additivity="false">
 		<level value="trace" />
 		<appender-ref ref="console" />
 	</logger>
-
 	<logger name="org.hibernate" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="console" />
 	</logger>
 
+	<logger name="com.fabrefrederic.dao" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="console" />
+	</logger>
+	
 	<root>
-		<priority value="warn" />
+		<priority value=warn />
 		<appender-ref ref="console" />
 	</root>
 

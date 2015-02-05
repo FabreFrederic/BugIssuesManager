@@ -60,7 +60,6 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<jdbc:embedded-database id="dataSource" type="HSQL">
-		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/databaseCreation.sql" />
  		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/tableCreation.sql" />
 		<jdbc:script location="classpath:/com/fabrefrederic/dao/sql/population.sql" />
 	</jdbc:embedded-database>

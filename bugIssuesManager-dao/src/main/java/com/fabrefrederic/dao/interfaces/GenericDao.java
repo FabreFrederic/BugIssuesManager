@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * Generic interface DAO
  *
- * @author frederic.fabre
  * @param <T> Entity
  * @param <ID> Entity id
  */
