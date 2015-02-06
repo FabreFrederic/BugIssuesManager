@@ -59,6 +59,15 @@ public class Commit implements Serializable {
     private List<File> files;
 
     /**
+     * Constructor
+     *
+     * @param date
+     */
+    public Commit(final Date date) {
+        this.date = date;
+    }
+
+    /**
      * @return the number
      */
     public String getNumber() {
