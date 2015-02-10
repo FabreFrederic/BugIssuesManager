@@ -169,7 +169,7 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
      * The file must have a dot and an extension
      *
      * @param path
-     * @return file name
+     * @return file name, null if no file found
      */
     protected String getFileNameFromPath(String path) {
         String fileName = FilenameUtils.getName(path);

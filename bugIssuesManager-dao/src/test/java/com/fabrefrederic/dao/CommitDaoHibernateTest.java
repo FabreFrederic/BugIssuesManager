@@ -1,5 +1,7 @@
 package com.fabrefrederic.dao;
 
+import javax.persistence.NoResultException;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -36,7 +38,7 @@ public class CommitDaoHibernateTest {
     /**
      * When we search for a commit by a wrong commit number, we have to find no commit
      */
-    @Test
+    @Test(expected = NoResultException.class)
     public void findByCommitNumberWithWrongNumber() {
         // given
         final String commitNumber = "9999";
@@ -69,5 +71,6 @@ public class CommitDaoHibernateTest {
 
         // then
         Assert.assertNotNull(commit);
+        System.out.println(commit.getNumber());
     }
 }

@@ -49,8 +49,8 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
     }
 
     @Override
-    @Transactional
-    public Commit findByCommitNumber(String commitNumber) throws IllegalArgumentException {
+    @Transactional(noRollbackFor = NoResultException.class)
+    public Commit findByCommitNumber(String commitNumber) throws IllegalArgumentException, NoResultException {
         Commit commitResult = null;
 
         if (StringUtils.isBlank(commitNumber)) {
@@ -73,8 +73,10 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         } catch (final NoResultException noResultException) {
             LOGGER.info("No commit found with the commit number : " + commitNumber);
             LOGGER.debug(noResultException);
+            throw noResultException;
         } catch (final Exception exception) {
             LOGGER.error(exception);
+            throw exception;
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -82,11 +84,11 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
                 LOGGER.debug("A commit has been found");
             }
         }
-
         return commitResult;
     }
 
     @Override
+    @Transactional(noRollbackFor = NoResultException.class)
     public Commit findTheMostRecentCommit() {
         Commit commitResult = null;
 
@@ -94,16 +96,19 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         final CriteriaQuery<Commit> query = builder.createQuery(Commit.class);
 
         final Root<Commit> commit = query.from(Commit.class);
-        query.multiselect(builder.greatest(commit.get(Commit_.date)));
-        final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(query);
+        query.multiselect(commit.get(Commit_.number), builder.greatest(commit.get(Commit_.date)));
+        query.groupBy(commit.get(Commit_.number));
 
         try {
+            final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(query);
             commitResult = typedQuery.getSingleResult();
         } catch (final NoResultException noResultException) {
             LOGGER.info("No commit found");
             LOGGER.debug(noResultException);
+            throw noResultException;
         } catch (final Exception exception) {
             LOGGER.error(exception);
+            throw exception;
         }
 
         if (LOGGER.isDebugEnabled()) {

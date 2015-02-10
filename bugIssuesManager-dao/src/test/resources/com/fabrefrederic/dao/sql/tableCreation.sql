@@ -5,6 +5,9 @@ create table file (
     file_path varchar(255),
     primary key (file_id)
 );
+ALTER TABLE file
+ALTER COLUMN file_id
+SET DEFAULT nextval('bugIssuesManager_id_seq');
 
 -- Commit
 create table commit (
@@ -16,6 +19,9 @@ create table commit (
     commit_message varchar(1000),
     primary key (commit_id)
 );
+ALTER TABLE commit
+ALTER COLUMN commit_id
+SET DEFAULT nextval('bugIssuesManager_id_seq');
 
 -- Commit file
 create table commit_file (
@@ -31,3 +37,6 @@ create table issue (
     issue_description varchar(255),
     primary key (issue_id)
 );
+ALTER TABLE issue
+ALTER COLUMN issue_id
+SET DEFAULT nextval('bugIssuesManager_id_seq');

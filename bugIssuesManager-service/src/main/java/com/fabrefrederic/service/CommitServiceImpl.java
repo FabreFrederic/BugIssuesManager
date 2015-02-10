@@ -50,6 +50,12 @@ public class CommitServiceImpl implements CommitService {
         return commits;
     }
 
+    @Override
+    public Commit getTheLastSavedCommit() {
+        final Commit commit = commitDao.findTheMostRecentCommit();
+        return commit;
+    }
+
     /**
      * @param revisionControlSystem the revisionControlSystem to set
      */
@@ -63,11 +69,4 @@ public class CommitServiceImpl implements CommitService {
     public void setCommitDao(CommitDao commitDao) {
         this.commitDao = commitDao;
     }
-
-    @Override
-    public Commit getTheLastSavedCommit() {
-        final Commit commit = commitDao.findTheMostRecentCommit();
-        return commit;
-    }
-
 }
