@@ -64,6 +64,7 @@
 	</bean>
 
 	<!-- TODO : we have to use  JndiObjectFactoryBean instead of DriverManagerDataSource -->
+	<!-- Cf context.xml file -->
     <bean id="dataSourcePool" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName"><value>java:/comp/env/jdbc/bugissuesmanager</value></property>
     </bean>
