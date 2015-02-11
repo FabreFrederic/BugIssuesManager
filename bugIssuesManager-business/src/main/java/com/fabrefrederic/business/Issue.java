@@ -10,11 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
-
 @Entity
 @Table(name = "issue")
-@Component("issue")
 public class Issue implements Serializable {
     private static final long serialVersionUID = 1L;
 

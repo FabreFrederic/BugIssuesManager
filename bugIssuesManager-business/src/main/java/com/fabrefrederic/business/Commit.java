@@ -17,11 +17,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
-
 @Entity
 @Table(name = "commit")
-@Component("commit")
 public class Commit implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -38,7 +35,7 @@ public class Commit implements Serializable {
 
     /** Commit date */
     @Column(name = "commit_date")
-    public Date date;
+    private Date date;
 
     /** Commit author */
     @Column(name = "commit_author")
@@ -69,8 +66,7 @@ public class Commit implements Serializable {
      *
      * @param date
      */
-    public Commit(final String number, final Date date) {
-        this.number = number;
+    public Commit(final Date date) {
         this.date = date;
     }
 

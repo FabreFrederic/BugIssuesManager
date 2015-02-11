@@ -1,5 +1,9 @@
 package com.fabrefrederic.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.NoResultException;
 
 import junit.framework.Assert;
@@ -66,11 +70,22 @@ public class CommitDaoHibernateTest {
 
     @Test
     public void findTheMostRecentCommitTest() {
+        // given
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse("2099-03-28 10:00:00");
+        } catch (final ParseException e) {
+            Assert.fail("Error while initializing junit data sets");
+        }
+
         // when
         final Commit commit = commitDao.findTheMostRecentCommit();
 
         // then
         Assert.assertNotNull(commit);
-        System.out.println(commit.getNumber());
+        Assert.assertNotNull("The commit date should not be null", commit.getDate());
+        Assert.assertTrue(date.equals(commit.getDate()));
+        Assert.assertNotNull("The commit number should not be null", commit.getNumber());
     }
 }

@@ -1,11 +1,16 @@
 package com.fabrefrederic.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -90,18 +95,23 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
     @Override
     @Transactional(noRollbackFor = NoResultException.class)
     public Commit findTheMostRecentCommit() {
-        Commit commitResult = null;
+        Commit resultCommit = null;
+        List<Commit> commits = null;
 
-        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-        final CriteriaQuery<Commit> query = builder.createQuery(Commit.class);
+        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> criteriaQuery = criteriaBuilder.createQuery(Commit.class);
+        final Root<Commit> from = criteriaQuery.from(Commit.class);
+        final Path<Date> path = from.get(Commit_.date);
+        final CriteriaQuery<Commit> select = criteriaQuery.select(from);
 
-        final Root<Commit> commit = query.from(Commit.class);
-        query.multiselect(commit.get(Commit_.number), builder.greatest(commit.get(Commit_.date)));
-        query.groupBy(commit.get(Commit_.number));
+        final Subquery<Date> subquery = criteriaQuery.subquery(Date.class);
+        final Root<Commit> subfrom = subquery.from(Commit.class);
+        subquery.select(criteriaBuilder.greatest(subfrom.get(Commit_.date)));
+        select.where(criteriaBuilder.in(path).value(subquery));
 
         try {
-            final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(query);
-            commitResult = typedQuery.getSingleResult();
+            final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
+            commits = typedQuery.getResultList();
         } catch (final NoResultException noResultException) {
             LOGGER.info("No commit found");
             LOGGER.debug(noResultException);
@@ -112,10 +122,13 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         }
 
         if (LOGGER.isDebugEnabled()) {
-            if (commitResult != null) {
+            if (commits != null) {
                 LOGGER.debug("A commit has been found");
             }
         }
-        return commitResult;
+        if (commits != null && !commits.isEmpty()) {
+            resultCommit = commits.get(0);
+        }
+        return resultCommit;
     }
 }

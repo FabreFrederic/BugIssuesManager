@@ -13,14 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
-
 /**
  *
  */
 @Entity
 @Table(name = "file")
-@Component("file")
 public class File implements Serializable {
     private static final long serialVersionUID = 1L;
 
