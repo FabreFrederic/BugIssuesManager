@@ -72,10 +72,10 @@
 
 	<profiles>
 		<profile>
-			<id>postgres-it</id>
+			<id>postgresql-it</id>
 			<properties>
-				<sql.scripts.dir>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/sql</sql.scripts.dir>
-				<configFile>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/model.properties</configFile>
+				<postgresql.sql.dir>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/postgresql/sql</postgresql.sql.dir>
+				<postgresql.configFile>${project.basedir}/src/test/resources/com/fabrefrederic/integrationTest/postgresql/model.properties</postgresql.configFile>
 			</properties>
 			<build>
 				<plugins>
@@ -91,7 +91,7 @@
 								</goals>
 								<configuration>
 									<files>
-										<file>${configFile}</file>
+										<file>${postgresql.configFile}</file>
 									</files>
 								</configuration>
 							</execution>
@@ -183,9 +183,8 @@
 									<username>${jdbc.username}</username>
 									<password>${jdbc.password}</password>
 									<srcFiles>
-										<srcFile>${sql.scripts.dir}/databaseCreation.sql</srcFile>
-										<srcFile>${sql.scripts.dir}/tableCreation.sql</srcFile>
-										<srcFile>${sql.scripts.dir}/population.sql</srcFile>
+										<srcFile>${postgresql.sql.dir}/sequenceCreation.sql</srcFile>
+										<srcFile>${postgresql.sql.dir}/tableCreation.sql</srcFile>
 									</srcFiles>
 								</configuration>
 							</execution>
@@ -198,7 +197,7 @@
 						<version>2.17</version>
 						<executions>
 							<execution>
-								<id>integration-tests-postgreSQL</id>
+								<id>integration-tests-postgresql</id>
 								<goals>
 									<goal>integration-test</goal>
 									<!-- The goal verify fail the build if one IT fail -->
