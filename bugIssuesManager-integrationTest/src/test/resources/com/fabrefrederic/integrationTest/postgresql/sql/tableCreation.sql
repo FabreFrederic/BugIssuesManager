@@ -8,7 +8,7 @@ create table file (
 ALTER TABLE file
 ALTER COLUMN file_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
-ALTER TABLE file OWNER TO fred;
+ALTER TABLE file OWNER TO docker;
 
 -- Commit
 create table commit (
@@ -23,7 +23,7 @@ create table commit (
 ALTER TABLE commit
 ALTER COLUMN commit_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
-ALTER TABLE commit OWNER TO fred;
+ALTER TABLE commit OWNER TO docker;
 
 -- Commit file
 create table commit_file (
@@ -31,7 +31,7 @@ create table commit_file (
     file_id integer not null,
     primary key (commit_id, file_id)
 );
-ALTER TABLE commit_file OWNER TO fred;
+ALTER TABLE commit_file OWNER TO docker;
 
 -- Issue
 create table issue (
@@ -43,4 +43,4 @@ create table issue (
 ALTER TABLE issue
 ALTER COLUMN issue_id
 SET DEFAULT nextval('bugIssuesManager_id_seq');
-ALTER TABLE issue OWNER TO fred;
+ALTER TABLE issue OWNER TO docker;

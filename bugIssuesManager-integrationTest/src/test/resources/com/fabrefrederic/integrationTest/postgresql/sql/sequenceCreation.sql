@@ -6,4 +6,4 @@
   CACHE 1;
 
 ALTER TABLE bugIssuesManager_id_seq
- OWNER TO fred;
+ OWNER TO docker;

@@ -12,19 +12,18 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fabrefrederic.business.Commit;
-import com.fabrefrederic.dao.interfaces.CommitDao;
 import com.fabrefrederic.service.interfaces.CommitService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/com/fabrefrederic/service/spring/applicationContext-service.xml" })
 public class ITCommitService {
 
     private static final Logger LOGGER = Logger.getLogger(ITCommitService.class);
-    @Autowired
-    private CommitDao commitDao;
     @Autowired
     private CommitService commitService;
 
@@ -55,7 +54,6 @@ public class ITCommitService {
 
         // then
         Assert.assertEquals(commits.size(), commitNumber);
-        final List<Commit> commitsPersisted = commitDao.findAll();
-        Assert.assertEquals(commitsPersisted.size(), commitNumber);
+
     }
 }

@@ -18,7 +18,9 @@ import com.fabrefrederic.business.Commit;
 import com.fabrefrederic.dao.interfaces.CommitDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-test.xml" })
+@ContextConfiguration(locations = { "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-model.xml",
+        "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-datasource.xml",
+"classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml" })
 public class CommitDaoHibernateTest {
     @Autowired
     CommitDao commitDao;

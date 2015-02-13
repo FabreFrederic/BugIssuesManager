@@ -63,11 +63,6 @@
 			<artifactId>bugIssuesManager-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.fabrefrederic.bugIssuesManager.dao</groupId>
-			<artifactId>bugIssuesManager-dao</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -79,6 +74,8 @@
 			</properties>
 			<build>
 				<plugins>
+					<!-- Documentation : -->
+					<!-- https://github.com/rhuss/docker-maven-plugin/blob/master/doc/manual.md -->
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>properties-maven-plugin</artifactId>
@@ -105,8 +102,7 @@
 						<configuration>
 							<images>
 								<image>
-									<alias>db</alias>
-									<name>fabrefrederic/postgrestest1</name>
+									<name>postgresql_it</name>
 									<run>
 										<!-- Assign dynamically mapped ports to maven variables (which can be reused in integration tests) -->
 										<ports>
