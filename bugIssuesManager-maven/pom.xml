@@ -12,10 +12,10 @@
 	<modules>
 		<module>../bugIssuesManager-business</module>
 		<module>../bugIssuesManager-dao</module>
-		<module>../bugIssuesManager-integrationTest</module>
 		<module>../bugIssuesManager-technique</module>
-		<module>../bugIssuesManager-presentation</module>
 		<module>../bugIssuesManager-service</module>
+		<module>../bugIssuesManager-integrationTest</module>
+		<module>../bugIssuesManager-presentation</module>
 	</modules>
 
 	<properties>

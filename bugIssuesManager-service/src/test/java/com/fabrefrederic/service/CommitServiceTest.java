@@ -6,6 +6,7 @@ package com.fabrefrederic.service;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,9 @@ public class CommitServiceTest {
     @Autowired
     private CommitService commitService;
 
+    @Ignore
     @Test
     public void getAllCommit() {
-        System.out.println("toto");
         LOGGER.debug("getAllCommit - begin");
         final List<Commit> commits = commitService.getCommits("/trunk/", 1, 5);
         commitService.saveCommits(commits);
