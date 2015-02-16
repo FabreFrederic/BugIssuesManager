@@ -12,8 +12,7 @@
 
 	<properties>
 		<docker.maven.plugin.rhuss.version>0.10.4</docker.maven.plugin.rhuss.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -190,13 +189,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>2.17</version>
+						<version>${maven-failsafe-plugin.version}</version>
 						<executions>
 							<execution>
 								<id>integration-tests-postgresql</id>
 								<goals>
 									<goal>integration-test</goal>
-									<!-- The goal verify fail the build if one IT fail -->
 									<goal>verify</goal>
 								</goals>
 								<configuration>
@@ -204,6 +202,9 @@
 									<argLine>-XX:MaxPermSize=256m</argLine>
 									<systemPropertyVariables>
 									</systemPropertyVariables>
+									<includes>
+									 	<include>**/IT*.java</include>
+						          	</includes>
 								</configuration>
 							</execution>
 						</executions>
