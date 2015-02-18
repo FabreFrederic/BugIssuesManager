@@ -13,7 +13,7 @@
 	<groupId>com.fabrefrederic.bugIssuesManager.dao</groupId>
 	<artifactId>bugIssuesManager-dao</artifactId>
 	<packaging>jar</packaging>
-	<name>bugIssuesManager-dao</name>
+	<name>${project.artifactId}</name>
 
 	<dependencies>
 		<!-- Tests -->

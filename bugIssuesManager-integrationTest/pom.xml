@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.fabrefrederic.bugIssuesManager.integrationTest</groupId>
 	<artifactId>bugIssuesManager-integrationTest</artifactId>
-	<name>bugIssuesManager-integrationTest</name>
+	<name>${project.artifactId}</name>
 
 	<properties>
 		<docker.maven.plugin.rhuss.version>0.10.4</docker.maven.plugin.rhuss.version>

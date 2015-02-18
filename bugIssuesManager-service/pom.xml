@@ -14,8 +14,7 @@
 	<groupId>com.fabrefrederic.bugIssuesManager.service</groupId>
 	<artifactId>bugIssuesManager-service</artifactId>
 	<packaging>jar</packaging>
-
-	<name>bugIssuesManager-service</name>
+	<name>${project.artifactId}</name>
 
 	<dependencies>
 		<dependency>
