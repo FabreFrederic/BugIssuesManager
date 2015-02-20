@@ -1,0 +1,2 @@
+# BugIssuesManager
+Bug issues manager
