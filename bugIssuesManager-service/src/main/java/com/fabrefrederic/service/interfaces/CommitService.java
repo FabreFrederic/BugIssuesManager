@@ -4,6 +4,10 @@ import java.util.List;
 
 import com.fabrefrederic.business.Commit;
 
+/**
+ * Commit service
+ *
+ */
 public interface CommitService {
 
     /**
