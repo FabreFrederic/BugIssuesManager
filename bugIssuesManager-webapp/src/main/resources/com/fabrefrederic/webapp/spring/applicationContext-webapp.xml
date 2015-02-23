@@ -5,12 +5,5 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<import resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
-	<import resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
-	
-	<bean id="commitService"
-		class="com.fabrefrederic.service.CommitServiceImpl">
-		<property name="revisionControlSystem" ref="revisionControlSystem" />
-	</bean>
-
+	<import resource="classpath:com/fabrefrederic/service/spring/applicationContext-service.xml" />
 </beans>

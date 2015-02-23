@@ -50,6 +50,11 @@
 			<version>3.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.fabrefrederic.bugIssuesManager.service</groupId>
+			<artifactId>bugIssuesManager-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -70,22 +75,6 @@
 						<version>${postgresql-version}</version>
 					</dependency>
 				</dependencies>
-				<executions>
-					<execution>
-						<id>tomcat-run</id>
-						<goals>
-							<goal>run-war</goal>
-						</goals>
-						<phase>pre-integration-test</phase>
-					</execution>
-					<execution>
-						<id>tomcat-shutdown</id>
-						<goals>
-							<goal>shutdown</goal>
-						</goals>
-						<phase>post-integration-test</phase>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
