@@ -3,7 +3,7 @@
 	<display-name>bug issues manager</display-name>
 
 
-	<!-- - Location of the XML file that defines the root application context. - Applied by ContextLoaderListener. -->
+	<!-- - Location of the XML file that defines the root application context. Applied by ContextLoaderListener. -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:com/fabrefrederic/webapp/spring/applicationContext-webapp.xml</param-value>
