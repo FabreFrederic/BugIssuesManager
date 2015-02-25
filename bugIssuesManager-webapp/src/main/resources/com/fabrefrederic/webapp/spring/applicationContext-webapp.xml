@@ -11,4 +11,7 @@
 
     <task:annotation-driven />
     <bean id="schedulerConfiguration" class="com.fabrefrederic.webapp.scheduler.SchedulerConfiguration" />
+
+    	<context:property-placeholder
+		location="classpath:com/fabrefrederic/webapp/configScheduler.properties" />
 </beans>
