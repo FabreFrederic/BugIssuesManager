@@ -8,6 +8,10 @@
 	<packaging>pom</packaging>
 	<name>${project.artifactId}</name>
 
+	<prerequisites>
+		<maven>3.0.5</maven>
+	</prerequisites>
+
 	<modules>
 		<module>../bugIssuesManager-business</module>
 		<module>../bugIssuesManager-dao</module>
