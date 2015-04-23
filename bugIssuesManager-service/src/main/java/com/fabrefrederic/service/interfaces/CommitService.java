@@ -11,18 +11,18 @@ import com.fabrefrederic.business.Commit;
 public interface CommitService {
 
     /**
-     * Get the commits from the svn repository from the start to the end given revision
+     * Get the commits from the repository from the start to the end given revision
      *
-     * @param path : path on the svn repository
+     * @param path : path on the repository
      * @param startRevision : the start revision
      * @param endRevision : the end revision
      */
     List<Commit> getCommits(String path, long startRevision, long endRevision);
 
     /**
-     * Gets the commits from the given start revision to the last revision on the svn repository
+     * Gets the commits from the given start revision to the last revision on the repository
      *
-     * @param path : path on the svn repository
+     * @param path : path on the repository
      * @param startRevision : the start revision
      * @return the list of commits
      */
@@ -38,6 +38,7 @@ public interface CommitService {
 
     /**
      * It saves the commits in database
+     *
      * @param commits
      */
     void saveCommits(List<Commit> commits);

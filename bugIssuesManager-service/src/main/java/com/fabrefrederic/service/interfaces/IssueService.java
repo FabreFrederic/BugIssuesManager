@@ -7,10 +7,10 @@ import com.fabrefrederic.business.Issue;
 public interface IssueService {
 
     /**
-     * Returns the issues impacted by another new issue
+     * Returns the issues affected by another new issue
      *
      * @param issueId of the new issue
      * @return the list of issues
      */
-    public List<Issue> getModifiedIssuesByIssueId(Integer issueId);
+    public List<Issue> getAffectedIssuesByIssueId(Integer issueId);
 }
