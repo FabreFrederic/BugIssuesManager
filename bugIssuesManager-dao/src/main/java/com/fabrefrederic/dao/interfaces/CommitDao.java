@@ -1,8 +1,11 @@
 package com.fabrefrederic.dao.interfaces;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.business.Issue;
 
 public interface CommitDao extends GenericDao<Commit> {
 
@@ -22,4 +25,14 @@ public interface CommitDao extends GenericDao<Commit> {
      * @throws IllegalArgumentException if no commit number
      */
     Commit findByCommitNumber(String commitNumber) throws IllegalArgumentException, NoResultException;
+
+    /**
+     * Find a list of commits by an issue
+     *
+     * @param issue
+     * @return list of commits
+     * @throws IllegalArgumentException
+     * @throws NoResultException
+     */
+    List<Commit> findByIssueId(Issue issue) throws IllegalArgumentException, NoResultException;
 }

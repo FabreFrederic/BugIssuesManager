@@ -1,6 +1,6 @@
 package com.fabrefrederic.service.interfaces;
 
-import java.util.List;
+import java.util.Set;
 
 import com.fabrefrederic.business.Issue;
 
@@ -12,5 +12,5 @@ public interface IssueService {
      * @param issueId of the new issue
      * @return the list of issues
      */
-    public List<Issue> getAffectedIssuesByIssueId(Integer issueId);
+    public Set<Issue> getAffectedIssuesByIssueId(Integer issueId);
 }

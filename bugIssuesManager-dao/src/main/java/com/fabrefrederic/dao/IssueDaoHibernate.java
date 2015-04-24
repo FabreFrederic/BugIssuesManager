@@ -8,6 +8,6 @@ import com.fabrefrederic.dao.interfaces.IssueDao;
 @Component("IssueDaoHibernate")
 public class IssueDaoHibernate extends DaoHibernate<Issue> implements IssueDao {
 
-
+    private static final long serialVersionUID = 1L;
 
 }

@@ -14,65 +14,65 @@ import java.util.List;
  */
 public interface GenericDao<T> extends Serializable {
 
-	/**
-	 * Gets the class type to manage
-	 *
-	 * @return
-	 */
-	Class<T> getEntityBeanType();
+    /**
+     * Gets the class type to manage
+     *
+     * @return
+     */
+    Class<T> getEntityBeanType();
 
-	/**
-	 * Sets the class type to manage
-	 *
-	 * @param classToSet
-	 */
-	void setClazz(final Class< T > classToSet);
+    /**
+     * Sets the class type to manage
+     *
+     * @param classToSet
+     */
+    void setClazz(final Class< T > classToSet);
 
-	/**
-	 * Search for an entity by its id
-	 *
-	 * @param id
-	 * @return
-	 */
-	T findById(final Long id);
+    /**
+     * Search for an entity by its id
+     *
+     * @param id
+     * @return
+     */
+    T findById(final Integer id);
 
-	/**
-	 * Search for all the entities
-	 *
-	 * @return
-	 */
-	List< T > findAll();
+    /**
+     * Search for all the entities
+     *
+     * @return
+     */
+    List< T > findAll();
 
-	/**
-	 * Save an entity
-	 *
-	 * @param entity
-	 */
-	void save(final T entity);
+    /**
+     * Save an entity
+     *
+     * @param entity
+     */
+    void save(final T entity);
 
-	/**
-	 * Update an entity
-	 *
-	 * @param entity
-	 */
-	void update(final T entity);
+    /**
+     * Update an entity
+     *
+     * @param entity
+     */
+    void update(final T entity);
 
-	/**
-	 * Deletes an entity
-	 *
-	 * @param entity
-	 */
-	void delete(final T entity);
+    /**
+     * Deletes an entity
+     *
+     * @param entity
+     */
+    void delete(final T entity);
 
-	/**
-	 * Deletes an entity by its id
-	 *
-	 * @param entityId
-	 */
-	void deleteById(final Long entityId);
+    /**
+     * Deletes an entity by its id
+     *
+     * @param entityId
+     */
+    void deleteById(final Integer entityId);
 
-	/**
-	 * Flush
-	 */
-	void flush();
+    /**
+     * Flush
+     */
+    void flush();
 }

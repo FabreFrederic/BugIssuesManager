@@ -3,6 +3,7 @@ package com.fabrefrederic.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 
@@ -15,7 +16,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.business.Issue;
 import com.fabrefrederic.dao.interfaces.CommitDao;
+import com.fabrefrederic.dao.interfaces.IssueDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-model.xml",
@@ -24,6 +27,9 @@ import com.fabrefrederic.dao.interfaces.CommitDao;
 public class CommitDaoHibernateTest {
     @Autowired
     CommitDao commitDao;
+
+    @Autowired
+    IssueDao issueDao;
 
     /**
      * When we search for a commit by its commit number, we have to find one commit with this number
@@ -89,5 +95,20 @@ public class CommitDaoHibernateTest {
         Assert.assertNotNull("The commit date should not be null", commit.getDate());
         Assert.assertTrue(date.equals(commit.getDate()));
         Assert.assertNotNull("The commit number should not be null", commit.getNumber());
+    }
+
+    @Test
+    public void findByIssueIdTest() {
+        // given
+        final Integer issueId = 1;
+        final Integer commitsCountExpected = 2;
+
+        // when
+        final Issue issue = issueDao.findById(1);
+        final List<Commit> commits = commitDao.findByIssueId(issue);
+
+        // then
+        Assert.assertNotNull(commits);
+        Assert.assertTrue(commitsCountExpected.equals(commits.size()));
     }
 }
