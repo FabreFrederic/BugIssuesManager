@@ -12,5 +12,9 @@
 		class="com.fabrefrederic.service.CommitServiceImpl">
 		<property name="revisionControlSystem" ref="revisionControlSystem" />
 	</bean>
-
+	<bean id="issueService"
+		class="com.fabrefrederic.service.IssueServiceImpl">
+		<property name="issueDao" ref="issueDaoHibernate" />
+		<property name="commitDao" ref="commitDaoHibernate" />
+	</bean>
 </beans>
