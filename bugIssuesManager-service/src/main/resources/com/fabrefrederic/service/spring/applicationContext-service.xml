@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<import resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
-	<import resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
-	
-	<bean id="commitService"
-		class="com.fabrefrederic.service.CommitServiceImpl">
+	<import
+		resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
+	<import
+		resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
+
+	<context:property-placeholder
+		location="classpath:com/fabrefrederic/service/repository.properties" />
+
+	<bean id="commitService" class="com.fabrefrederic.service.CommitServiceImpl">
 		<property name="revisionControlSystem" ref="revisionControlSystem" />
 	</bean>
-	<bean id="issueService"
-		class="com.fabrefrederic.service.IssueServiceImpl">
+	<bean id="issueService" class="com.fabrefrederic.service.IssueServiceImpl">
 		<property name="issueDao" ref="issueDaoHibernate" />
 		<property name="commitDao" ref="commitDaoHibernate" />
 	</bean>
