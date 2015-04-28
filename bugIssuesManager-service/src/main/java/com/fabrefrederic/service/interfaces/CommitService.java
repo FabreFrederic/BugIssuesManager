@@ -16,8 +16,9 @@ public interface CommitService {
      * @param path : path on the repository
      * @param startRevision : the start revision
      * @param endRevision : the end revision
+     * @param limit the maximum number of commits to retrieve
      */
-    List<Commit> getCommits(String path, long startRevision, long endRevision);
+    List<Commit> getCommits(final String path, final String startRevision, final String endRevision, final Integer limit);
 
     /**
      * Gets the commits from the given start revision to the last revision on the repository
@@ -26,8 +27,7 @@ public interface CommitService {
      * @param startRevision : the start revision
      * @return the list of commits
      */
-    List<Commit> getCommitsToTheLastRevision(String path, long startRevision);
-
+    List<Commit> getCommitsToTheLastRevision(final String path, final String startRevision, final Integer limit);
 
     /**
      * Gets the last commit saved in DB
@@ -37,10 +37,26 @@ public interface CommitService {
     Commit getTheLastSavedCommit();
 
     /**
+     * Gets the last commit from the repository
+     *
+     * @param path : path on the repository
+     * @return the commit found
+     */
+    Commit getTheLastCommitFromRepository(final String path);
+
+    /**
+     * Gets the first commit from the repository
+     *
+     * @param path : path on the repository
+     * @return the commit found
+     */
+    Commit getTheFirstCommitFromRepository(final String path);
+
+    /**
      * It saves the commits in database
      *
      * @param commits
      */
-    void saveCommits(List<Commit> commits);
+    void saveCommits(final List<Commit> commits);
 
 }

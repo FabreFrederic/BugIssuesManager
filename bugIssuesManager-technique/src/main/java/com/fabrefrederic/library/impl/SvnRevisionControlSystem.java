@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.tmatesoft.svn.core.ISVNLogEntryHandler;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
@@ -69,26 +70,34 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     }
 
     @Override
-    public List<Commit> getLogs(final String path, final long startRevision, final long endRevision) throws Exception {
+    public List<Commit> getLogs(final String path, final String startRevision, final String endRevision, final Integer limit) throws Exception {
+        LOGGER.debug("path : " + path);
+        LOGGER.debug("startRevision : " + startRevision);
+        LOGGER.debug("endRevision : " + endRevision);
+        LOGGER.debug("limit : " + limit);
+
         if (repository == null) {
             LOGGER.error("The repository is not instanciate");
             throw new Exception("The repository is not instanciate");
         }
         if (StringUtils.isBlank(path)) {
-            LOGGER.error("the svn path must be specified");
-            throw new InvalidParameterException("the svn path must be specified");
+            LOGGER.error("The svn path must be specified");
+            throw new InvalidParameterException("The svn path must be specified");
         }
 
-        Collection<SVNLogEntry> logEntries = new ArrayList<SVNLogEntry>();
+        final Collection<SVNLogEntry> logEntries = new ArrayList<SVNLogEntry>();
         // The revision is the map id
         final Map<Long, SVNDirEntry> svnDirEntries = new HashMap<Long, SVNDirEntry>();
+        final long svnStartRevision = Long.parseLong(startRevision);
+        final long svnEndRevision = Long.parseLong(endRevision);
         try {
-            logEntries = repository.log(new String[] { path }, null, startRevision, endRevision, false, false);
-
-            for (final SVNLogEntry svnLogEntry : logEntries) {
-                svnDirEntries.put(svnLogEntry.getRevision(),
-                        repository.getDir(path, svnLogEntry.getRevision(), true, null));
-            }
+            repository.log(new String[] {path}, svnStartRevision, svnEndRevision, true, true,  limit,
+                    false, null, new ISVNLogEntryHandler() {
+                @Override
+                public void handleLogEntry(SVNLogEntry logEntry) throws SVNException {
+                    logEntries.add(logEntry);
+                }
+            });
 
         } catch (final SVNException e) {
             LOGGER.error(e);
@@ -101,16 +110,47 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     }
 
     @Override
-    public List<Commit> getLogsToTheLastRevision(final String path, final long startRevision) throws Exception {
+    public List<Commit> getLogsToTheLastRevision(final String path, final String startRevision, final Integer limit) throws Exception {
         if (repository == null) {
             LOGGER.error("The repository is not instanciate");
             throw new Exception("The repository is not instanciate");
         }
         if (StringUtils.isBlank(path)) {
-            LOGGER.error("the svn path must be specified");
-            throw new InvalidParameterException("the svn path must be specified");
+            LOGGER.error("The svn path must be specified");
+            throw new InvalidParameterException("The svn path must be specified");
         }
-        return getLogs(path, startRevision, repository.getLatestRevision());
+        final String svnEndRevision = String.valueOf(repository.getLatestRevision());
+        return getLogs(path, startRevision, svnEndRevision, limit);
+    }
+
+    @Override
+    public Commit getTheLastCommitFromRepository(final String path) throws Exception {
+        if (repository == null) {
+            LOGGER.error("The repository is not instanciate");
+            throw new Exception("The repository is not instanciate");
+        }
+        if (StringUtils.isBlank(path)) {
+            LOGGER.error("The svn path must be specified");
+            throw new InvalidParameterException("The svn path must be specified");
+        }
+        Commit commit = null;
+        final String revisionNumber = String.valueOf(repository.getLatestRevision());
+        final List<Commit> commits = getLogs(path, revisionNumber, revisionNumber, 1);
+        if (commits != null && commits.size() > 0) {
+            commit = commits.get(0);
+        }
+        return commit;
+    }
+
+    @Override
+    public Commit getTheFirstCommitFromRepository(String path) throws Exception {
+        Commit commit = null;
+
+        final List<Commit> commits = getLogs(path, "1", "1", 1);
+        if (commits != null && commits.size() > 0) {
+            commit = commits.get(0);
+        }
+        return commit;
     }
 
     /**
@@ -158,7 +198,6 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
                     commit.setIssue(issue);
                 }
             }
-
             commits.add(commit);
         }
         return commits;
@@ -181,4 +220,5 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
         }
         return fileName;
     }
+
 }
