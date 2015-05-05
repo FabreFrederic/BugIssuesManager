@@ -39,20 +39,34 @@ public class SchedulerConfiguration {
 
         Commit firstCommit = commitService.getTheLastSavedCommit();
         if (firstCommit != null) {
+            System.out.println("First commit found in DB");
             System.out.println("firstCommit.getNumber() : " + firstCommit.getNumber());
             System.out.println("firstCommit.getDate() : " + firstCommit.getDate());
             LOGGER.debug("firstCommit.getNumber() : " + firstCommit.getNumber());
             LOGGER.debug("firstCommit.getDate() : " + firstCommit.getDate());
         } else {
+            System.out.println("First commit found in repository");
             firstCommit = commitService.getTheFirstCommitFromRepository(repositoryPath);
+            System.out.println("firstCommit.getNumber() : " + firstCommit.getNumber());
+            System.out.println("firstCommit.getDate() : " + firstCommit.getDate());
         }
         // TODO : move the limit in a configuration file
         final List<Commit> commits = commitService.getCommitsToTheLastRevision(repositoryPath,
-                firstCommit.getNumber(), 10);
+                firstCommit.getNumber(), 2);
         if (commits != null && commits.size() > 0) {
             commits.remove(firstCommit);
             commitService.saveCommits(commits);
         }
+        else {
+            System.out.println("No commit found");
+        }
 
+    }
+
+    /**
+     * @param commitService the commitService to set
+     */
+    public void setCommitService(CommitService commitService) {
+        this.commitService = commitService;
     }
 }

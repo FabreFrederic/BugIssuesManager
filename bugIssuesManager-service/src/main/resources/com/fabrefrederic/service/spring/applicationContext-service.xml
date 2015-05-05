@@ -11,9 +11,6 @@
 	<import
 		resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
 
-	<context:property-placeholder
-		location="classpath:com/fabrefrederic/service/repository.properties" />
-
 	<bean id="commitService" class="com.fabrefrederic.service.CommitServiceImpl">
 		<property name="revisionControlSystem" ref="revisionControlSystem" />
 	</bean>

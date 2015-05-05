@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 	<!-- Here we specify where to find our property file -->
-	<context:property-placeholder
+	<context:property-placeholder ignore-unresolvable="true"
 		location="classpath:com/fabrefrederic/integrationTest/postgresql/model.properties" />
 
 </beans>
