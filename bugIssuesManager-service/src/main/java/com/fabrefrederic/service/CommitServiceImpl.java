@@ -35,7 +35,12 @@ public class CommitServiceImpl implements CommitService {
     public void saveCommits(final List<Commit> commits) {
         if (commits != null) {
             for (final Commit commit : commits) {
-                commitDao.save(commit);
+                try {
+                    commitDao.save(commit);
+                }
+                catch(final Exception exception) {
+                    LOGGER.debug("This commit already exists", exception);
+                }
             }
         }
         commitDao.flush();

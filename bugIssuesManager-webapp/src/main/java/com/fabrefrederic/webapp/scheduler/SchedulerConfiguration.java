@@ -52,9 +52,9 @@ public class SchedulerConfiguration {
         }
         // TODO : move the limit in a configuration file
         final List<Commit> commits = commitService.getCommitsToTheLastRevision(repositoryPath,
-                firstCommit.getNumber(), 2);
+                firstCommit.getNumber(), 10);
         if (commits != null && commits.size() > 0) {
-            commits.remove(firstCommit);
+            // commits.remove(firstCommit);
             commitService.saveCommits(commits);
         }
         else {
