@@ -21,160 +21,177 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fabrefrederic.business.Commit;
 import com.fabrefrederic.business.Commit_;
+import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.Issue;
 import com.fabrefrederic.dao.interfaces.CommitDao;
-import com.fabrefrederic.dao.interfaces.IssueDao;
+import com.fabrefrederic.dao.interfaces.FileDao;
 
 @Component("commitDaoHibernate")
 public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDao {
-	private static final Logger LOGGER = Logger.getLogger(CommitDaoHibernate.class);
-	private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(CommitDaoHibernate.class);
+    private static final long serialVersionUID = 1L;
 
-	@Autowired
-	private IssueDao issueDao;
+    @Autowired
+    private FileDao fileDao;
 
-	/**
-	 * Constructor
-	 *
-	 * @param persistentClass
-	 */
-	public CommitDaoHibernate(Class<Commit> persistentClass) {
-		super(persistentClass);
-	}
+    /**
+     * Constructor
+     *
+     * @param persistentClass
+     */
+    public CommitDaoHibernate(Class<Commit> persistentClass) {
+        super(persistentClass);
+    }
 
-	/**
-	 * Default constructor
-	 */
-	public CommitDaoHibernate() {
-		super();
-	}
+    /**
+     * Default constructor
+     */
+    public CommitDaoHibernate() {
+        super();
+    }
 
-	@Override
-	@Transactional
-	public void save(final Commit commit) {
-		try {
-			// TODO : check if commit already exist in DB
-		} catch (final Exception e) {
-			LOGGER.error(e);
-		}
-		super.save(commit);
-	}
+    @Override
+    @Transactional
+    public void save(final Commit commit) {
+        try {
+            findByCommitNumber(commit.getNumber());
+        } catch(final NoResultException commitNoResultException) {
+            // This commit has not been found in DB
+            LOGGER.error("This commit has to be persisted - commit.number : " + commit.getNumber());
+            final List<File> files = commit.getFiles();
+            final List<File> allFiles = new ArrayList<>();
 
-	@Override
-	@Transactional(noRollbackFor = NoResultException.class)
-	public Commit findByCommitNumber(String commitNumber) throws IllegalArgumentException, NoResultException {
-		Commit commitResult = null;
+            // Files checking
+            for (final File file : files) {
+                try {
+                    final File foundFile = fileDao.findByName(file.getName());
+                    allFiles.add(foundFile);
+                } catch(final NoResultException fileNoResultException) {
+                    allFiles.add(file);
+                }
+            }
+            commit.setFiles(allFiles);
+            super.save(commit);
+        } catch (final Exception e) {
+            LOGGER.error("Error while saving commit number : " + commit.getNumber(), e);
+        }
+    }
 
-		if (StringUtils.isBlank(commitNumber)) {
-			LOGGER.error("The commit number cannot be null or empty");
-			throw new IllegalArgumentException("A commit number cannot be null or empty");
-		}
+    @Override
+    @Transactional(noRollbackFor = NoResultException.class)
+    public Commit findByCommitNumber(String commitNumber) throws IllegalArgumentException, NoResultException {
+        Commit commitResult = null;
 
-		final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Commit> criteriaQuery = builder.createQuery(Commit.class);
+        if (StringUtils.isBlank(commitNumber)) {
+            LOGGER.error("The commit number cannot be null or empty");
+            throw new IllegalArgumentException("A commit number cannot be null or empty");
+        }
 
-		final Root<Commit> root = criteriaQuery.from(Commit.class);
-		final ParameterExpression<String> paramExpression = builder.parameter(String.class);
-		criteriaQuery.select(root).where(builder.equal(root.get(Commit_.number), paramExpression));
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> criteriaQuery = builder.createQuery(Commit.class);
 
-		final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
-		typedQuery.setParameter(paramExpression, commitNumber);
+        final Root<Commit> root = criteriaQuery.from(Commit.class);
+        final ParameterExpression<String> paramExpression = builder.parameter(String.class);
+        criteriaQuery.select(root).where(builder.equal(root.get(Commit_.number), paramExpression));
 
-		try {
-			commitResult = typedQuery.getSingleResult();
-		} catch (final NoResultException noResultException) {
-			LOGGER.info("No commit found with the commit number : " + commitNumber);
-			LOGGER.debug(noResultException);
-			throw noResultException;
-		} catch (final Exception exception) {
-			LOGGER.error(exception);
-			throw exception;
-		}
+        final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        typedQuery.setParameter(paramExpression, commitNumber);
 
-		if (LOGGER.isDebugEnabled()) {
-			if (commitResult != null) {
-				LOGGER.debug("A commit has been found");
-			}
-		}
-		return commitResult;
-	}
+        try {
+            commitResult = typedQuery.getSingleResult();
+        } catch (final NoResultException noResultException) {
+            LOGGER.info("No commit found with the commit number : " + commitNumber);
+            LOGGER.debug(noResultException);
+            throw noResultException;
+        } catch (final Exception exception) {
+            LOGGER.error(exception);
+            throw exception;
+        }
 
-	@Override
-	@Transactional(noRollbackFor = NoResultException.class)
-	public Commit findTheMostRecentCommit() {
-		Commit resultCommit = null;
-		List<Commit> commits = null;
+        if (LOGGER.isDebugEnabled()) {
+            if (commitResult != null) {
+                LOGGER.debug("A commit has been found");
+            }
+        }
+        return commitResult;
+    }
 
-		final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Commit> criteriaQuery = criteriaBuilder.createQuery(Commit.class);
-		final Root<Commit> from = criteriaQuery.from(Commit.class);
-		final Path<Date> path = from.get(Commit_.date);
-		final CriteriaQuery<Commit> select = criteriaQuery.select(from);
+    @Override
+    @Transactional(noRollbackFor = NoResultException.class)
+    public Commit findTheMostRecentCommit() {
+        Commit resultCommit = null;
+        List<Commit> commits = null;
 
-		final Subquery<Date> subquery = criteriaQuery.subquery(Date.class);
-		final Root<Commit> subfrom = subquery.from(Commit.class);
-		subquery.select(criteriaBuilder.greatest(subfrom.get(Commit_.date)));
-		select.where(criteriaBuilder.in(path).value(subquery));
+        final CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> criteriaQuery = criteriaBuilder.createQuery(Commit.class);
+        final Root<Commit> from = criteriaQuery.from(Commit.class);
+        final Path<Date> path = from.get(Commit_.date);
+        final CriteriaQuery<Commit> select = criteriaQuery.select(from);
 
-		try {
-			final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
-			commits = typedQuery.getResultList();
-		} catch (final NoResultException noResultException) {
-			LOGGER.info("No commit found");
-			LOGGER.debug(noResultException);
-			throw noResultException;
-		} catch (final Exception exception) {
-			LOGGER.error(exception);
-			throw exception;
-		}
+        final Subquery<Date> subquery = criteriaQuery.subquery(Date.class);
+        final Root<Commit> subfrom = subquery.from(Commit.class);
+        subquery.select(criteriaBuilder.greatest(subfrom.get(Commit_.date)));
+        select.where(criteriaBuilder.in(path).value(subquery));
 
-		if (LOGGER.isDebugEnabled()) {
-			if (commits != null) {
-				LOGGER.debug("A commit has been found");
-			}
-		}
-		if (commits != null && !commits.isEmpty()) {
-			resultCommit = commits.get(0);
-		}
-		return resultCommit;
-	}
+        try {
+            final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
+            commits = typedQuery.getResultList();
+        } catch (final NoResultException noResultException) {
+            LOGGER.info("No commit found");
+            LOGGER.debug(noResultException);
+            throw noResultException;
+        } catch (final Exception exception) {
+            LOGGER.error(exception);
+            throw exception;
+        }
 
-	@Override
-	@Transactional(noRollbackFor = NoResultException.class)
-	public List<Commit> findByIssueId(Issue issue) throws IllegalArgumentException, NoResultException {
-		if (issue == null) {
-			LOGGER.error("The issue cannot be null");
-			throw new IllegalArgumentException("The issue cannot be null");
-		}
+        if (LOGGER.isDebugEnabled()) {
+            if (commits != null) {
+                LOGGER.debug("A commit has been found");
+            }
+        }
+        if (commits != null && !commits.isEmpty()) {
+            resultCommit = commits.get(0);
+        }
+        return resultCommit;
+    }
 
-		List<Commit> commits = new ArrayList<>();
+    @Override
+    @Transactional(noRollbackFor = NoResultException.class)
+    public List<Commit> findByIssueId(Issue issue) throws IllegalArgumentException, NoResultException {
+        if (issue == null) {
+            LOGGER.error("The issue cannot be null");
+            throw new IllegalArgumentException("The issue cannot be null");
+        }
 
-		final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		final CriteriaQuery<Commit> criteriaQuery = builder.createQuery(Commit.class);
+        List<Commit> commits = new ArrayList<>();
 
-		final Root<Commit> root = criteriaQuery.from(Commit.class);
-		final ParameterExpression<Issue> paramExpression = builder.parameter(Issue.class);
-		criteriaQuery.select(root).where(builder.equal(root.get(Commit_.issue), paramExpression));
+        final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+        final CriteriaQuery<Commit> criteriaQuery = builder.createQuery(Commit.class);
 
-		final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
-		typedQuery.setParameter(paramExpression, issue);
+        final Root<Commit> root = criteriaQuery.from(Commit.class);
+        final ParameterExpression<Issue> paramExpression = builder.parameter(Issue.class);
+        criteriaQuery.select(root).where(builder.equal(root.get(Commit_.issue), paramExpression));
 
-		try {
-			commits = typedQuery.getResultList();
-		} catch (final NoResultException noResultException) {
-			LOGGER.info("No commit found with the issue id : " + issue.getId());
-			LOGGER.debug(noResultException);
-			throw noResultException;
-		} catch (final Exception exception) {
-			LOGGER.error(exception);
-			throw exception;
-		}
+        final TypedQuery<Commit> typedQuery = getEntityManager().createQuery(criteriaQuery);
+        typedQuery.setParameter(paramExpression, issue);
 
-		if (LOGGER.isDebugEnabled()) {
-			if (commits != null) {
-				LOGGER.debug(commits.size() + " commits have been found");
-			}
-		}
-		return commits;
-	}
+        try {
+            commits = typedQuery.getResultList();
+        } catch (final NoResultException noResultException) {
+            LOGGER.info("No commit found with the issue id : " + issue.getId());
+            LOGGER.debug(noResultException);
+            throw noResultException;
+        } catch (final Exception exception) {
+            LOGGER.error(exception);
+            throw exception;
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            if (commits != null) {
+                LOGGER.debug(commits.size() + " commits have been found");
+            }
+        }
+        return commits;
+    }
 }

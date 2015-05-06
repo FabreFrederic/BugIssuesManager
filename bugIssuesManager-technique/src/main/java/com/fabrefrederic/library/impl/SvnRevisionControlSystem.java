@@ -146,7 +146,7 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     public Commit getTheFirstCommitFromRepository(String path) throws Exception {
         Commit commit = null;
 
-        final List<Commit> commits = getLogs(path, "1", "1", 1);
+        final List<Commit> commits = getLogs(path, "-1", "-1", 1);
         if (commits != null && commits.size() > 0) {
             commit = commits.get(0);
         }
