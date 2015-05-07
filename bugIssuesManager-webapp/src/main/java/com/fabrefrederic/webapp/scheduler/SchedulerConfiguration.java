@@ -24,41 +24,31 @@ public class SchedulerConfiguration {
     @Value("${repository.path}")
     String repositoryPath;
 
-    @Scheduled(cron = "${scheduler.cron}")
-    public void printMessage() {
-        System.out.println("I am called by Spring scheduler - system");
-        LOGGER.debug("I am called by Spring scheduler");
-    }
+    @Value("${search.limit}")
+    String searchLimit;
 
     @Scheduled(cron = "${scheduler.cron}")
     public void saveNewCommitsFromRepository() {
-        // TODO : delete all the system.out
+        // Default value
+        if (searchLimit == null) {
+            searchLimit = "10";
+        }
+        final Integer limit = Integer.valueOf(searchLimit);
+
         // TODO : develop a method to know the running time
-        System.out.println("saveNewCommitsFromRepository() started : " + new Date());
         LOGGER.debug("saveNewCommitsFromRepository() started : " + new Date());
 
         Commit firstCommit = commitService.getTheLastSavedCommit();
-        if (firstCommit != null) {
-            System.out.println("First commit found in DB");
-            System.out.println("firstCommit.getNumber() : " + firstCommit.getNumber());
-            System.out.println("firstCommit.getDate() : " + firstCommit.getDate());
-            LOGGER.debug("firstCommit.getNumber() : " + firstCommit.getNumber());
-            LOGGER.debug("firstCommit.getDate() : " + firstCommit.getDate());
-        } else {
-            System.out.println("First commit found in repository");
+        if (firstCommit == null) {
             firstCommit = commitService.getTheFirstCommitFromRepository(repositoryPath);
-            System.out.println("firstCommit.getNumber() : " + firstCommit.getNumber());
-            System.out.println("firstCommit.getDate() : " + firstCommit.getDate());
         }
-        // TODO : move the limit in a configuration file
         final List<Commit> commits = commitService.getCommitsToTheLastRevision(repositoryPath,
-                firstCommit.getNumber(), 10);
+                firstCommit.getNumber(), limit);
         if (commits != null && commits.size() > 0) {
-            // commits.remove(firstCommit);
             commitService.saveCommits(commits);
         }
         else {
-            System.out.println("No commit found");
+            LOGGER.info("No commit found");
         }
 
     }

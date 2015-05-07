@@ -18,6 +18,6 @@
 	<context:property-placeholder ignore-unresolvable="true"
 		location="classpath:com/fabrefrederic/dao/model.properties" />
 
-	<!-- <import resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" /> -->
 	<import resource="classpath:com/fabrefrederic/service/spring/applicationContext-service.xml" />
+
 </beans>

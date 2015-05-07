@@ -23,7 +23,7 @@ public class FileDaoHibernate extends DaoHibernate<File> implements FileDao {
 
     @Transactional(noRollbackFor = NoResultException.class)
     @Override
-    public File findByName(String name) {
+    public File findByName(String name) throws NoResultException {
         File fileResult = null;
 
         if (StringUtils.isBlank(name)) {

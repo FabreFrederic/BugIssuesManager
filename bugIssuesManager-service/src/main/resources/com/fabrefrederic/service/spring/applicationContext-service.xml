@@ -8,8 +8,21 @@
 
 	<import
 		resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
-	<import
-		resource="classpath:com/fabrefrederic/library/spring/applicationContext-library.xml" />
+
+	<!-- TODO : develop xml configuration -->
+		<!-- 	<bean id="configuration2"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:/com/fabrefrederic/library/configuration.xml</value>
+		</property>
+	</bean> -->
+
+	<bean id="revisionControlSystem"
+		class="com.fabrefrederic.library.impl.SvnRevisionControlSystem">
+		<constructor-arg type="java.lang.String" value="https://svn.java.net/svn/javaeetutorial~svn" />
+		<constructor-arg type="java.lang.String" value="username" />
+		<constructor-arg type="java.lang.String" value="password" />
+	</bean>
 
 	<bean id="commitService" class="com.fabrefrederic.service.CommitServiceImpl">
 		<property name="revisionControlSystem" ref="revisionControlSystem" />

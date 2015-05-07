@@ -68,6 +68,8 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
                     allFiles.add(foundFile);
                 } catch(final NoResultException fileNoResultException) {
                     allFiles.add(file);
+                } catch(final Exception exception) {
+                    LOGGER.error("", exception);
                 }
             }
             commit.setFiles(allFiles);

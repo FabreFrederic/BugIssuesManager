@@ -42,7 +42,6 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
      * @param url
      * @param username
      * @param password
-     * @return
      * @throws IOException
      */
     public SvnRevisionControlSystem(final String url, final String username, final String password) throws IOException {
@@ -145,8 +144,23 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     @Override
     public Commit getTheFirstCommitFromRepository(String path) throws Exception {
         Commit commit = null;
+        Integer firstCommitNumber = 1;
+        String begin = null;
+        final Integer searchLimit = 10;
+        Integer lastCommitNumber = firstCommitNumber + searchLimit;
+        String end = null;
+        final Integer loopLimit = 1000000;
+        List<Commit> commits = new ArrayList<>();
 
-        final List<Commit> commits = getLogs(path, "-1", "-1", 1);
+        while (commits.size() < 1 && firstCommitNumber < loopLimit) {
+            begin = Integer.toString(firstCommitNumber);
+            end = Integer.toString(lastCommitNumber);
+
+            commits = getLogs(path, begin, end, searchLimit);
+
+            firstCommitNumber = lastCommitNumber;
+            lastCommitNumber = firstCommitNumber + searchLimit;
+        }
         if (commits != null && commits.size() > 0) {
             commit = commits.get(0);
         }
