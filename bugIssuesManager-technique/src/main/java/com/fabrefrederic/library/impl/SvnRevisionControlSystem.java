@@ -98,6 +98,11 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
                 }
             });
 
+            if (logEntries != null) {
+                for (final SVNLogEntry svnLogEntry : logEntries) {
+                    svnDirEntries.put(svnLogEntry.getRevision(), repository.getDir(path, svnLogEntry.getRevision(), true, null));
+                }
+            }
         } catch (final SVNException e) {
             LOGGER.error(e);
             throw new Exception("Error while getting svn logs", e);

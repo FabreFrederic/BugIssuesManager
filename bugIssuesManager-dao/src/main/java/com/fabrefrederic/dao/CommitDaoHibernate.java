@@ -64,7 +64,7 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
             // Files checking
             for (final File file : files) {
                 try {
-                    final File foundFile = fileDao.findByName(file.getName());
+                    final File foundFile = fileDao.findByPath(file.getName());
                     allFiles.add(foundFile);
                 } catch(final NoResultException fileNoResultException) {
                     allFiles.add(file);

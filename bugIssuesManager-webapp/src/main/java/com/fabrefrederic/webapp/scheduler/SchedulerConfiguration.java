@@ -11,7 +11,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.business.Issue;
 import com.fabrefrederic.service.interfaces.CommitService;
+import com.fabrefrederic.service.interfaces.IssueService;
 
 @Configuration
 @EnableScheduling
@@ -20,6 +22,9 @@ public class SchedulerConfiguration {
 
     @Autowired
     private CommitService commitService;
+
+    @Autowired
+    private IssueService issueService;
 
     @Value("${repository.path}")
     String repositoryPath;
@@ -45,6 +50,10 @@ public class SchedulerConfiguration {
         final List<Commit> commits = commitService.getCommitsToTheLastRevision(repositoryPath,
                 firstCommit.getNumber(), limit);
         if (commits != null && commits.size() > 0) {
+            for (final Commit commit : commits) {
+                final Issue issue = issueService.getIssuesFromMessage(commit.getMessage());
+                commit.setIssue(issue);
+            }
             commitService.saveCommits(commits);
         }
         else {
@@ -59,4 +68,12 @@ public class SchedulerConfiguration {
     public void setCommitService(CommitService commitService) {
         this.commitService = commitService;
     }
+
+    /**
+     * @param issueService the issueService to set
+     */
+    public void setIssueService(IssueService issueService) {
+        this.issueService = issueService;
+    }
+
 }

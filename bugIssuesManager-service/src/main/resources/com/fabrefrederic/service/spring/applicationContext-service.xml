@@ -9,8 +9,7 @@
 	<import
 		resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
 
-	<!-- TODO : develop xml configuration -->
-		<!-- 	<bean id="configuration2"
+<!--  	<bean id="configuration2"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="location">
 			<value>classpath:/com/fabrefrederic/library/configuration.xml</value>
@@ -19,9 +18,9 @@
 
 	<bean id="revisionControlSystem"
 		class="com.fabrefrederic.library.impl.SvnRevisionControlSystem">
-		<constructor-arg type="java.lang.String" value="https://svn.java.net/svn/javaeetutorial~svn" />
-		<constructor-arg type="java.lang.String" value="username" />
-		<constructor-arg type="java.lang.String" value="password" />
+		<constructor-arg type="java.lang.String" value="http://svn.akio.fr/svn/repos/com/akio/uic" />
+		<constructor-arg type="java.lang.String" value="" />
+		<constructor-arg type="java.lang.String" value="" />
 	</bean>
 
 	<bean id="commitService" class="com.fabrefrederic.service.CommitServiceImpl">

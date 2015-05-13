@@ -8,11 +8,11 @@ import com.fabrefrederic.business.File;
 public interface FileDao extends GenericDao<File> {
 
     /**
-     * Find a file by its name
+     * Find a file by its path
      *
-     * @param name file
+     * @param path and file name
      * @return the file
      */
-    File findByName(final String name) throws NoResultException;
+    File findByPath(final String path) throws NoResultException;
 
 }

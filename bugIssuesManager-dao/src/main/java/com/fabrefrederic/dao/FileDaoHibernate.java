@@ -23,12 +23,12 @@ public class FileDaoHibernate extends DaoHibernate<File> implements FileDao {
 
     @Transactional(noRollbackFor = NoResultException.class)
     @Override
-    public File findByName(String name) throws NoResultException {
+    public File findByPath(String path) throws NoResultException {
         File fileResult = null;
 
-        if (StringUtils.isBlank(name)) {
-            LOGGER.error("The file name cannot be null or empty");
-            throw new IllegalArgumentException("The file name cannot be null or empty");
+        if (StringUtils.isBlank(path)) {
+            LOGGER.error("The file path cannot be null or empty");
+            throw new IllegalArgumentException("The file path cannot be null or empty");
         }
 
         final CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
@@ -36,15 +36,15 @@ public class FileDaoHibernate extends DaoHibernate<File> implements FileDao {
 
         final Root<File> root = criteriaQuery.from(File.class);
         final ParameterExpression<String> paramExpression = builder.parameter(String.class);
-        criteriaQuery.select(root).where(builder.equal(root.get(File_.name), paramExpression));
+        criteriaQuery.select(root).where(builder.equal(root.get(File_.path), paramExpression));
 
         final TypedQuery<File> typedQuery = getEntityManager().createQuery(criteriaQuery);
-        typedQuery.setParameter(paramExpression, name);
+        typedQuery.setParameter(paramExpression, path);
 
         try {
             fileResult = typedQuery.getSingleResult();
         } catch (final NoResultException noResultException) {
-            LOGGER.info("No file found with the name : " + name);
+            LOGGER.info("No file found with the path : " + path);
             LOGGER.debug(noResultException);
             throw noResultException;
         } catch (final Exception exception) {

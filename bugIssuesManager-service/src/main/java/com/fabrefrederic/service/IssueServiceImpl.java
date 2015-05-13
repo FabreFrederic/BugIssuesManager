@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,33 @@ public class IssueServiceImpl implements IssueService {
         return issues;
     }
 
+    @Override
+    public Issue getIssuesFromMessage(String message) {
+        Issue issue = null;
+        final String issuePattern = "AIC-";
+
+        if (StringUtils.isNotBlank(message)) {
+            int pos = message.indexOf(issuePattern);
+
+            if (pos > -1) {
+                issue = new Issue();
+                String issueName = "";
+                pos = pos + issuePattern.length();
+
+                for (int i = pos; i < message.length(); i++){
+                    final String c = String.valueOf(message.charAt(i));
+                    if (StringUtils.isNumeric(c)) {
+                        issueName = issueName + c;
+                    } else {
+                        break;
+                    }
+                }
+                issue.setName(issuePattern + issueName);
+            }
+        }
+        return issue;
+    }
+
     /**
      * @param issueDao the issueDao to set
      */
@@ -70,4 +98,5 @@ public class IssueServiceImpl implements IssueService {
     public void setCommitDao(CommitDao commitDao) {
         this.commitDao = commitDao;
     }
+
 }

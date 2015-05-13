@@ -13,4 +13,12 @@ public interface IssueService {
      * @return the list of issues
      */
     public Set<Issue> getAffectedIssuesByIssueId(Integer issueId);
+
+    /**
+     * get the issues from the message
+     *
+     * @param message
+     * @return an issues
+     */
+    public Issue getIssuesFromMessage(String message);
 }
