@@ -10,7 +10,6 @@ import javax.persistence.criteria.Root;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.File_;
@@ -21,7 +20,6 @@ public class FileDaoHibernate extends DaoHibernate<File> implements FileDao {
     private static final Logger LOGGER = Logger.getLogger(FileDaoHibernate.class);
     private static final long serialVersionUID = 1L;
 
-    @Transactional(noRollbackFor = NoResultException.class)
     @Override
     public File findByPath(String path) throws NoResultException {
         File fileResult = null;

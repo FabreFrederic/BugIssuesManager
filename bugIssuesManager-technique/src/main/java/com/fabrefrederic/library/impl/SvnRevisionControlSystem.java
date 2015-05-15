@@ -90,8 +90,12 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
         final long svnStartRevision = Long.parseLong(startRevision);
         final long svnEndRevision = Long.parseLong(endRevision);
         try {
-            repository.log(new String[] {path}, svnStartRevision, svnEndRevision, true, true,  limit,
-                    false, null, new ISVNLogEntryHandler() {
+            //            repository.log(new String[] {path}, svnStartRevision, svnEndRevision, true, false, limit,
+            //                    true, null, new ISVNLogEntryHandler() {
+
+            repository.log(new String[]{path}, svnStartRevision, svnEndRevision,
+                    true, false, limit, true, null, new ISVNLogEntryHandler() {
+                // repository.log(new String[]{path}, svnStartRevision, svnEndRevision, true, false, limit, new ISVNLogEntryHandler() {
                 @Override
                 public void handleLogEntry(SVNLogEntry logEntry) throws SVNException {
                     logEntries.add(logEntry);

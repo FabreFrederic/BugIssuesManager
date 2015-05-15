@@ -25,6 +25,7 @@ import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.Issue;
 import com.fabrefrederic.dao.interfaces.CommitDao;
 import com.fabrefrederic.dao.interfaces.FileDao;
+import com.fabrefrederic.dao.interfaces.IssueDao;
 
 @Component("commitDaoHibernate")
 public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDao {
@@ -33,6 +34,9 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
 
     @Autowired
     private FileDao fileDao;
+
+    @Autowired
+    private IssueDao issueDao;
 
     /**
      * Constructor
@@ -58,10 +62,10 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
         } catch(final NoResultException commitNoResultException) {
             // This commit has not been found in DB
             LOGGER.error("This commit has to be persisted - commit.number : " + commit.getNumber());
-            final List<File> files = commit.getFiles();
-            final List<File> allFiles = new ArrayList<>();
 
             // Files checking
+            final List<File> files = commit.getFiles();
+            final List<File> allFiles = new ArrayList<>();
             for (final File file : files) {
                 try {
                     final File foundFile = fileDao.findByPath(file.getName());
@@ -73,6 +77,22 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
                 }
             }
             commit.setFiles(allFiles);
+
+            // Issues checking
+            final Issue issue = commit.getIssue();
+            if (issue != null) {
+                try {
+                    final Issue foundIssue = issueDao.findByName(issue.getName());
+                    if (foundIssue != null) {
+                        commit.setIssue(foundIssue);
+                    }
+                } catch(final NoResultException fileNoResultException) {
+                    LOGGER.debug("", fileNoResultException);
+                } catch(final Exception exception) {
+                    LOGGER.error("", exception);
+                }
+            }
+
             super.save(commit);
         } catch (final Exception e) {
             LOGGER.error("Error while saving commit number : " + commit.getNumber(), e);
