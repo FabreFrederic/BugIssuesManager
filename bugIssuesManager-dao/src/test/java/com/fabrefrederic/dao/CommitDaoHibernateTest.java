@@ -105,7 +105,7 @@ public class CommitDaoHibernateTest {
 
         // when
         final Issue issue = issueDao.findById(1);
-        final List<Commit> commits = commitDao.findByIssueId(issue);
+        final List<Commit> commits = commitDao.findByIssue(issue);
 
         // then
         Assert.assertNotNull(commits);

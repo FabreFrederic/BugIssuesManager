@@ -18,7 +18,7 @@
 
 	<bean id="revisionControlSystem"
 		class="com.fabrefrederic.library.impl.SvnRevisionControlSystem">
-		<constructor-arg type="java.lang.String" value="http://svn.test.fr/svn/repos" />
+		<constructor-arg type="java.lang.String" value="http://svn.akio.fr/svn/repos" />
 		<constructor-arg type="java.lang.String" value="" />
 		<constructor-arg type="java.lang.String" value="" />
 	</bean>

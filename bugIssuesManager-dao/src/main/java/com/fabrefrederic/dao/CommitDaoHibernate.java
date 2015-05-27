@@ -180,7 +180,7 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
 
     @Override
     @Transactional(noRollbackFor = NoResultException.class)
-    public List<Commit> findByIssueId(Issue issue) throws IllegalArgumentException, NoResultException {
+    public List<Commit> findByIssue(Issue issue) throws IllegalArgumentException, NoResultException {
         if (issue == null) {
             LOGGER.error("The issue cannot be null");
             throw new IllegalArgumentException("The issue cannot be null");

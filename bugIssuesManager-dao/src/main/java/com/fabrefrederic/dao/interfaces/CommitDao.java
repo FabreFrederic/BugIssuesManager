@@ -34,5 +34,5 @@ public interface CommitDao extends GenericDao<Commit> {
      * @throws IllegalArgumentException
      * @throws NoResultException
      */
-    List<Commit> findByIssueId(Issue issue) throws IllegalArgumentException, NoResultException;
+    List<Commit> findByIssue(Issue issue) throws IllegalArgumentException, NoResultException;
 }

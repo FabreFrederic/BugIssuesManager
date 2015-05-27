@@ -68,15 +68,14 @@ public class SchedulerConfiguration {
      * @return the search limit
      */
     private Integer getSearchLimit() {
-        Integer limit = null;
+        Integer limit = 10;
         if (StringUtils.isNotBlank(searchLimit)) {
             try {
                 limit = Integer.valueOf(searchLimit);
             } catch (final NumberFormatException exception) {
-                LOGGER.warn("Search limit does not have the appropriate format or is not is not a number", exception);
+                LOGGER.warn("Search limit does not have the appropriate format or is not a number", exception);
             }
         } else {
-            limit = 10;
             LOGGER.warn("Search limit is not configured. default value is 10");
         }
         return limit;

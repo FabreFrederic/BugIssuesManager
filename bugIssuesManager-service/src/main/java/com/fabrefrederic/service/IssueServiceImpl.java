@@ -19,6 +19,8 @@ import com.fabrefrederic.service.interfaces.IssueService;
 public class IssueServiceImpl implements IssueService {
     private static final Logger LOGGER = Logger.getLogger(IssueServiceImpl.class);
 
+    private final String ISSUE_PATTERN = "AIC-";
+
     @Autowired
     private IssueDao issueDao;
 
@@ -29,14 +31,11 @@ public class IssueServiceImpl implements IssueService {
     @Transactional
     public Set<Issue> getAffectedIssuesByIssueId(Integer issueId) {
         LOGGER.debug("issueId : " + issueId);
-
-        // Result set
         final Set<Issue> issues = new HashSet<>();
 
-        // Gets the commits list from the issueId
         final Issue issue = issueDao.findById(issueId);
         if (issue != null) {
-            final List<Commit> commits = commitDao.findByIssueId(issue);
+            final List<Commit> commits = commitDao.findByIssue(issue);
 
             // File list from the all these commits
             final Set<File> files = new HashSet<>();
@@ -55,23 +54,23 @@ public class IssueServiceImpl implements IssueService {
                 issues.add(commit.getIssue());
             }
         }
+        LOGGER.debug("issues.size : " + issues.size());
         return issues;
     }
 
     @Override
     public Issue getIssuesFromMessage(String message) {
         Issue issue = null;
-        final String issuePattern = "AIC-";
 
         if (StringUtils.isNotBlank(message)) {
-            int pos = message.indexOf(issuePattern);
+            int pos = StringUtils.upperCase(message).indexOf(ISSUE_PATTERN);
 
             if (pos > -1) {
                 issue = new Issue();
                 String issueName = "";
-                pos = pos + issuePattern.length();
+                pos = pos + ISSUE_PATTERN.length();
 
-                for (int i = pos; i < message.length(); i++){
+                for (int i = pos; i < message.length(); i++) {
                     final String c = String.valueOf(message.charAt(i));
                     if (StringUtils.isNumeric(c)) {
                         issueName = issueName + c;
@@ -79,7 +78,7 @@ public class IssueServiceImpl implements IssueService {
                         break;
                     }
                 }
-                issue.setName(issuePattern + issueName);
+                issue.setName(ISSUE_PATTERN + issueName);
             }
         }
         return issue;
