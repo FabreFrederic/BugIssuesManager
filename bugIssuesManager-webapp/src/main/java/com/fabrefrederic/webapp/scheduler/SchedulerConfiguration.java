@@ -51,7 +51,7 @@ public class SchedulerConfiguration {
                     firstCommit.getNumber(), limit);
             if (commits != null && commits.size() > 0) {
                 for (final Commit commit : commits) {
-                    final Issue issue = issueService.getIssuesFromMessage(commit.getMessage());
+                    final Issue issue = issueService.extractIssuesFromMessage(commit.getMessage());
                     commit.setIssue(issue);
                 }
                 LOGGER.debug("Number of commits to save from the repository : " + commits.size());

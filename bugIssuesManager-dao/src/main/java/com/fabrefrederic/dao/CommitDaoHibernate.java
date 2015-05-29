@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -59,7 +60,7 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
     public void save(final Commit commit) {
         try {
             findByCommitNumber(commit.getNumber());
-        } catch(final NoResultException commitNoResultException) {
+        } catch (final NoResultException commitNoResultException) {
             // This commit has not been found in DB
             LOGGER.error("This commit has to be persisted - commit.number : " + commit.getNumber());
 
@@ -68,11 +69,11 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
             final List<File> allFiles = new ArrayList<>();
             for (final File file : files) {
                 try {
-                    final File foundFile = fileDao.findByPath(file.getName());
+                    final File foundFile = fileDao.findByPath(file.getPath());
                     allFiles.add(foundFile);
-                } catch(final NoResultException fileNoResultException) {
+                } catch (final NoResultException fileNoResultException) {
                     allFiles.add(file);
-                } catch(final Exception exception) {
+                } catch (final Exception exception) {
                     LOGGER.error("", exception);
                 }
             }
@@ -86,9 +87,9 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
                     if (foundIssue != null) {
                         commit.setIssue(foundIssue);
                     }
-                } catch(final NoResultException fileNoResultException) {
+                } catch (final NoResultException fileNoResultException) {
                     LOGGER.debug("", fileNoResultException);
-                } catch(final Exception exception) {
+                } catch (final Exception exception) {
                     LOGGER.error("", exception);
                 }
             }
@@ -202,6 +203,40 @@ public class CommitDaoHibernate extends DaoHibernate<Commit> implements CommitDa
             commits = typedQuery.getResultList();
         } catch (final NoResultException noResultException) {
             LOGGER.info("No commit found with the issue id : " + issue.getId());
+            LOGGER.debug(noResultException);
+            throw noResultException;
+        } catch (final Exception exception) {
+            LOGGER.error(exception);
+            throw exception;
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            if (commits != null) {
+                LOGGER.debug(commits.size() + " commits have been found");
+            }
+        }
+        return commits;
+    }
+
+    @Override
+    public List<Commit> findByFile(File file) throws IllegalArgumentException, NoResultException {
+        if (file == null) {
+            LOGGER.error("The file cannot be null");
+            throw new IllegalArgumentException("The file cannot be null");
+        }
+
+        List<Commit> commits = new ArrayList<>();
+        final StringBuilder queryString = new StringBuilder();
+        queryString.append("Select distinct commit ");
+        queryString.append("from Commit commit join commit.files file ");
+        queryString.append("where file.id = :fileId");
+
+        try {
+            final Query query = getEntityManager().createQuery(queryString.toString());
+            query.setParameter("fileId", file.getId());
+            commits = query.getResultList();
+        } catch (final NoResultException noResultException) {
+            LOGGER.info("No file found with the file id : " + file.getId());
             LOGGER.debug(noResultException);
             throw noResultException;
         } catch (final Exception exception) {

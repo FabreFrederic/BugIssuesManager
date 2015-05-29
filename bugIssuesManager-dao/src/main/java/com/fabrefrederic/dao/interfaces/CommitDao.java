@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 
 import com.fabrefrederic.business.Commit;
+import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.Issue;
 
 public interface CommitDao extends GenericDao<Commit> {
@@ -35,4 +36,12 @@ public interface CommitDao extends GenericDao<Commit> {
      * @throws NoResultException
      */
     List<Commit> findByIssue(Issue issue) throws IllegalArgumentException, NoResultException;
+
+    /**
+     * Find a list of commits affecting a file
+     *
+     * @param file
+     * @return a set of commits
+     */
+    List<Commit> findByFile(File file) throws IllegalArgumentException, NoResultException;
 }

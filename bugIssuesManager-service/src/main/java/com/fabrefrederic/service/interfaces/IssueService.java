@@ -9,10 +9,10 @@ public interface IssueService {
     /**
      * Returns the issues affected by another new issue
      *
-     * @param issueId of the new issue
+     * @param issue name of the new issue
      * @return the list of issues
      */
-    public Set<Issue> getAffectedIssuesByIssueId(Integer issueId);
+    public Set<Issue> getAffectedIssuesByIssueId(String issueName);
 
     /**
      * get the issues from the message
@@ -20,5 +20,5 @@ public interface IssueService {
      * @param message
      * @return an issues
      */
-    public Issue getIssuesFromMessage(String message);
+    public Issue extractIssuesFromMessage(String message);
 }

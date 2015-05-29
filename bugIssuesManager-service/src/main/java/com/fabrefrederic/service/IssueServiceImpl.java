@@ -29,37 +29,41 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     @Transactional
-    public Set<Issue> getAffectedIssuesByIssueId(Integer issueId) {
-        LOGGER.debug("issueId : " + issueId);
+    public Set<Issue> getAffectedIssuesByIssueId(String issueName) {
+        LOGGER.debug("issueName : " + issueName);
         final Set<Issue> issues = new HashSet<>();
 
-        final Issue issue = issueDao.findById(issueId);
-        if (issue != null) {
-            final List<Commit> commits = commitDao.findByIssue(issue);
+        if (StringUtils.isNotBlank(issueName)) {
+            final Issue issue = issueDao.findByName(issueName);
+            if (issue != null) {
+                final List<Commit> commits = commitDao.findByIssue(issue);
 
-            // File list from the all these commits
-            final Set<File> files = new HashSet<>();
-            for (final Commit commit : commits) {
-                files.addAll(commit.getFiles());
-            }
+                // Files list from all these commits
+                final Set<File> files = new HashSet<>();
+                for (final Commit commit : commits) {
+                    files.addAll(commit.getFiles());
+                }
 
-            // Gets the commits list from all these files
-            final Set<Commit> commitsOfFiles = new HashSet<>();
-            for (final File file : files) {
-                commitsOfFiles.addAll(file.getCommits());
-            }
+                // Gets the commits list from all these files
+                final Set<Commit> commitsOfFiles = new HashSet<>();
+                for (final File file : files) {
+                    final List<Commit> commitsByFile = commitDao.findByFile(file);
+                    commitsOfFiles.addAll(commitsByFile);
+                }
 
-            // Set of issues from these commits
-            for (final Commit commit : commitsOfFiles) {
-                issues.add(commit.getIssue());
+                // Set of issues from these commits
+                for (final Commit commit : commitsOfFiles) {
+                    issues.add(commit.getIssue());
+                }
+                issues.remove(issue);
             }
+            LOGGER.debug("issues.size : " + issues.size());
         }
-        LOGGER.debug("issues.size : " + issues.size());
         return issues;
     }
 
     @Override
-    public Issue getIssuesFromMessage(String message) {
+    public Issue extractIssuesFromMessage(String message) {
         Issue issue = null;
 
         if (StringUtils.isNotBlank(message)) {
@@ -85,10 +89,24 @@ public class IssueServiceImpl implements IssueService {
     }
 
     /**
+     * @return the issueDao
+     */
+    public IssueDao getIssueDao() {
+        return issueDao;
+    }
+
+    /**
      * @param issueDao the issueDao to set
      */
     public void setIssueDao(IssueDao issueDao) {
         this.issueDao = issueDao;
+    }
+
+    /**
+     * @return the commitDao
+     */
+    public CommitDao getCommitDao() {
+        return commitDao;
     }
 
     /**

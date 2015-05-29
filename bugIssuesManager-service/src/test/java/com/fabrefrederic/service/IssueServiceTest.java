@@ -18,7 +18,7 @@ import com.fabrefrederic.service.interfaces.IssueService;
 @ContextConfiguration(locations = { "classpath:/com/fabrefrederic/service/spring/applicationContext-service.xml",
         "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-datasource.xml",
         "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-model.xml",
-"classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml" })
+        "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml" })
 public class IssueServiceTest {
 
     @Autowired
@@ -26,12 +26,13 @@ public class IssueServiceTest {
 
     @Ignore
     @Test
-    public void getAffectedIssuesByIssueIdTest() {
+    // TODO to implement this test
+    public void getAffectedIssuesByIssueNameTest() {
         // given
-        final Integer issueId = 1;
+        final String issueName = "AIC-1000";
 
         // when
-        final Set<Issue> issues = issueService.getAffectedIssuesByIssueId(issueId);
+        final Set<Issue> issues = issueService.getAffectedIssuesByIssueId(issueName);
 
         // then
         Assert.assertNotNull(issues);

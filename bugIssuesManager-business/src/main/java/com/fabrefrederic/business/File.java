@@ -19,82 +19,80 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "file")
 public class File implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/** Id */
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bugIssuesManager_id_seq")
-	@SequenceGenerator(name = "bugIssuesManager_id_seq", sequenceName = "bugIssuesManager_id_seq", allocationSize = 1)
-	@Column(name = "file_id")
-	private int id;
+    /** Id */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bugIssuesManager_id_seq")
+    @SequenceGenerator(name = "bugIssuesManager_id_seq", sequenceName = "bugIssuesManager_id_seq", allocationSize = 1)
+    @Column(name = "file_id")
+    private int id;
 
-	/** File name */
-	@Column(name = "file_name")
-	private String name;
+    /** File name */
+    @Column(name = "file_name")
+    private String name;
 
-	/** Path file */
-	@Column(name = "file_path")
-	private String path;
+    /** Path file */
+    @Column(name = "file_path")
+    private String path;
 
-	/** Commits */
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "files", targetEntity = Commit.class)
-	private List<Commit> commits;
+    /** Commits */
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "files", targetEntity = Commit.class)
+    private List<Commit> commits;
 
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	/**
-	 * @return the path
-	 */
-	public String getPath() {
-		return path;
-	}
+    /**
+     * @return the path
+     */
+    public String getPath() {
+        return path;
+    }
 
-	/**
-	 * @param path
-	 *            the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	/**
-	 * @return the commits
-	 */
-	public List<Commit> getCommits() {
-		return commits;
-	}
+    /**
+     * @return the commits
+     */
+    public List<Commit> getCommits() {
+        return commits;
+    }
 
-	/**
-	 * @param commits the commits to set
-	 */
-	public void setCommits(List<Commit> commits) {
-		this.commits = commits;
-	}
+    /**
+     * @param commits the commits to set
+     */
+    public void setCommits(List<Commit> commits) {
+        this.commits = commits;
+    }
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
 }
