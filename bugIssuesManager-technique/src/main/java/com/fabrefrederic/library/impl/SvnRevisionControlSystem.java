@@ -69,7 +69,8 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     }
 
     @Override
-    public List<Commit> getLogs(final String path, final String startRevision, final String endRevision, final Integer limit) throws Exception {
+    public List<Commit> getLogs(final String path, final String startRevision, final String endRevision,
+            final Integer limit) throws Exception {
         LOGGER.debug("path : " + path);
         LOGGER.debug("startRevision : " + startRevision);
         LOGGER.debug("endRevision : " + endRevision);
@@ -90,21 +91,18 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
         final long svnStartRevision = Long.parseLong(startRevision);
         final long svnEndRevision = Long.parseLong(endRevision);
         try {
-            //            repository.log(new String[] {path}, svnStartRevision, svnEndRevision, true, false, limit,
-            //                    true, null, new ISVNLogEntryHandler() {
-
-            repository.log(new String[]{path}, svnStartRevision, svnEndRevision,
-                    true, false, limit, true, null, new ISVNLogEntryHandler() {
-                // repository.log(new String[]{path}, svnStartRevision, svnEndRevision, true, false, limit, new ISVNLogEntryHandler() {
-                @Override
-                public void handleLogEntry(SVNLogEntry logEntry) throws SVNException {
-                    logEntries.add(logEntry);
-                }
-            });
+            repository.log(new String[] { path }, svnStartRevision, svnEndRevision, true, false, limit, true, null,
+                    new ISVNLogEntryHandler() {
+                        @Override
+                        public void handleLogEntry(SVNLogEntry logEntry) throws SVNException {
+                            logEntries.add(logEntry);
+                        }
+                    });
 
             if (logEntries != null) {
                 for (final SVNLogEntry svnLogEntry : logEntries) {
-                    svnDirEntries.put(svnLogEntry.getRevision(), repository.getDir(path, svnLogEntry.getRevision(), true, null));
+                    svnDirEntries.put(svnLogEntry.getRevision(),
+                            repository.getDir(path, svnLogEntry.getRevision(), true, null));
                 }
             }
         } catch (final SVNException e) {
@@ -118,7 +116,8 @@ public class SvnRevisionControlSystem extends AbstractRevisionControlSystem {
     }
 
     @Override
-    public List<Commit> getLogsToTheLastRevision(final String path, final String startRevision, final Integer limit) throws Exception {
+    public List<Commit> getLogsToTheLastRevision(final String path, final String startRevision, final Integer limit)
+            throws Exception {
         if (repository == null) {
             LOGGER.error("The repository is not instanciate");
             throw new Exception("The repository is not instanciate");
