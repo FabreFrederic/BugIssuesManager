@@ -3,6 +3,7 @@ package com.fabrefrederic.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -29,9 +30,9 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     @Transactional
-    public Set<Issue> getAffectedIssuesByIssueId(String issueName) {
+    public TreeSet<Issue> getAffectedIssuesByIssueId(String issueName) {
         LOGGER.debug("issueName : " + issueName);
-        final Set<Issue> issues = new HashSet<>();
+        final TreeSet<Issue> issues = new TreeSet<Issue>();
 
         if (StringUtils.isNotBlank(issueName)) {
             final Issue issue = issueDao.findByName(issueName);
@@ -53,7 +54,9 @@ public class IssueServiceImpl implements IssueService {
 
                 // Set of issues from these commits
                 for (final Commit commit : commitsOfFiles) {
-                    issues.add(commit.getIssue());
+                    if (commit.getIssue() != null) {
+                        issues.add(commit.getIssue());
+                    }
                 }
                 issues.remove(issue);
             }

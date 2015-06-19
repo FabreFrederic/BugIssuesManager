@@ -8,7 +8,7 @@
 		<core:if test="${not empty issueList}">
 			<ul>
 				<core:forEach var="issueValue" items="${issueList}">
-					<li>${issueValue.name}</li>
+					<li>${issueValue.name} - ${issueValue.description}</li>
 				</core:forEach>
 			</ul>
 		</core:if>

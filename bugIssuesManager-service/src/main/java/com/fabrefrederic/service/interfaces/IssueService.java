@@ -1,6 +1,6 @@
 package com.fabrefrederic.service.interfaces;
 
-import java.util.Set;
+import java.util.TreeSet;
 
 import com.fabrefrederic.business.Issue;
 
@@ -12,7 +12,7 @@ public interface IssueService {
      * @param issue name of the new issue
      * @return the list of issues
      */
-    public Set<Issue> getAffectedIssuesByIssueId(String issueName);
+    public TreeSet<Issue> getAffectedIssuesByIssueId(String issueName);
 
     /**
      * get the issues from the message

@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.google.common.collect.ComparisonChain;
+
 @Entity
 @Table(name = "issue")
-public class Issue implements Serializable {
+public class Issue implements Serializable, Comparable<Issue> {
     private static final long serialVersionUID = 1L;
 
     /** Id */
@@ -29,6 +31,17 @@ public class Issue implements Serializable {
     /** Issue description */
     @Column(name = "issue_description")
     private String description;
+
+    /**
+     * Compare an issue with the current issue instance in order to sort a collection of issues
+     *
+     * @param issue issue to compare with the current issue instance
+     * @return
+     */
+    @Override
+    public int compareTo(Issue issue) {
+        return ComparisonChain.start().compare(getId(), issue.getId()).result();
+    }
 
     /**
      * @return the name

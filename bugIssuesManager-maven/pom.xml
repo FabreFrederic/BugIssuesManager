@@ -36,6 +36,7 @@
 		<apache-commons-lang3-version>3.3.2</apache-commons-lang3-version>
 		<commons-io-version>2.4</commons-io-version>
 		<javax.servlet.jstl-version>1.2</javax.servlet.jstl-version>
+		<com.google.guava-version>18.0</com.google.guava-version>
 	</properties>
 
 	<build>
