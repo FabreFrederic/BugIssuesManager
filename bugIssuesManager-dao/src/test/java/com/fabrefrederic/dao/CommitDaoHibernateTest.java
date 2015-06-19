@@ -23,7 +23,7 @@ import com.fabrefrederic.dao.interfaces.IssueDao;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-model.xml",
         "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao-datasource.xml",
-"classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml" })
+        "classpath:/com/fabrefrederic/dao/spring/applicationContext-dao.xml" })
 public class CommitDaoHibernateTest {
     @Autowired
     CommitDao commitDao;
@@ -104,7 +104,7 @@ public class CommitDaoHibernateTest {
         final Integer commitsCountExpected = 2;
 
         // when
-        final Issue issue = issueDao.findById(1);
+        final Issue issue = issueDao.findById(issueId);
         final List<Commit> commits = commitDao.findByIssue(issue);
 
         // then
