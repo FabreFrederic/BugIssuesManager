@@ -1,5 +1,7 @@
 package com.fabrefrederic.dao.interfaces;
 
+import javax.persistence.NoResultException;
+
 import com.fabrefrederic.business.Issue;
 
 public interface IssueDao extends GenericDao<Issue> {
@@ -10,6 +12,6 @@ public interface IssueDao extends GenericDao<Issue> {
      * @param name issue name
      * @return the issue
      */
-    Issue findByName(String name);
+    Issue findByName(String name) throws NoResultException;
 
 }
