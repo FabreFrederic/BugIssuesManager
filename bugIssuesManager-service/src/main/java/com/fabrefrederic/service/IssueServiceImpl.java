@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.persistence.NoResultException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,13 @@ public class IssueServiceImpl implements IssueService {
         final TreeSet<Issue> issues = new TreeSet<Issue>();
 
         if (StringUtils.isNotBlank(issueName)) {
-            final Issue issue = issueDao.findByName(issueName);
+            Issue issue = null;
+            try {
+                issue = issueDao.findByName(issueName);
+            } catch (final NoResultException noResultException) {
+                // TODO : Display a message to the user
+                LOGGER.info("This issue has not been found - issueName : " + issueName);
+            }
             if (issue != null) {
                 final List<Commit> commits = commitDao.findByIssue(issue);
 
