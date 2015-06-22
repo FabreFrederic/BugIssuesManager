@@ -46,8 +46,7 @@ public class ITCommitService {
         }
         try {
             commitService.saveCommits(commits);
-        }
-        catch (final Exception exception) {
+        } catch (final Exception exception) {
             LOGGER.error("Error during saving commits into the database", exception);
             Assert.fail("Error during saving commits into the database");
         }
@@ -68,7 +67,7 @@ public class ITCommitService {
         try {
             final Commit lastSavedCommit = commitService.getTheLastSavedCommit();
             System.out.println(lastSavedCommit.getNumber());
-            final Long lastSavedCommitNumber = Long.valueOf(lastSavedCommit.getNumber());
+            final String lastSavedCommitNumber = lastSavedCommit.getNumber();
             commits = commitService.getCommitsToTheLastRevision(repositoryPath, lastSavedCommitNumber, null);
         } catch (final Exception exception) {
             LOGGER.error("Error during getting commits from the svn repository", exception);
@@ -76,8 +75,7 @@ public class ITCommitService {
         }
         try {
             commitService.saveCommits(commits);
-        }
-        catch (final Exception exception) {
+        } catch (final Exception exception) {
             LOGGER.error("Error during saving commits into the database", exception);
             Assert.fail("Error during saving commits into the database");
         }
@@ -110,8 +108,7 @@ public class ITCommitService {
         }
         try {
             commitService.saveCommits(commits);
-        }
-        catch (final Exception exception) {
+        } catch (final Exception exception) {
             LOGGER.error("Error during saving commits into the database", exception);
             Assert.fail("Error during saving commits into the database");
         }
