@@ -50,6 +50,11 @@
 			<artifactId>svnkit</artifactId>
 			<version>${svnkit-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io-version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>
@@ -57,12 +62,6 @@
 			</groupId>
 			<artifactId>bugIssuesManager-business</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>${commons-io-version}</version>
 		</dependency>
 
 	</dependencies>
