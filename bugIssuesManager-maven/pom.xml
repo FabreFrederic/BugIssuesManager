@@ -15,8 +15,8 @@
 	<modules>
 		<module>../bugIssuesManager-business</module>
 		<module>../bugIssuesManager-dao</module>
-		<module>../bugIssuesManager-library</module>
 		<module>../bugIssuesManager-business-dto</module>
+		<module>../bugIssuesManager-library</module>
 		<module>../bugIssuesManager-service</module>
 		<module>../bugIssuesManager-webapp</module>
 		<module>../bugIssuesManager-integrationTest</module>
