@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fabrefrederic.business.Issue;
+import com.fabrefrederic.business.dto.IssueDto;
 import com.fabrefrederic.service.interfaces.IssueService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,10 +29,10 @@ public class IssueServiceTest {
     // TODO to implement this test
     public void getAffectedIssuesByIssueNameTest() {
         // given
-        final String issueName = "AIC-1000";
+        final String issueName = "ABC-100";
 
         // when
-        final Set<Issue> issues = issueService.getAffectedIssuesByIssueId(issueName);
+        final Set<IssueDto> issues = issueService.getAffectedIssuesByIssueId(issueName);
 
         // then
         Assert.assertNotNull(issues);

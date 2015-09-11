@@ -9,12 +9,14 @@ import javax.persistence.NoResultException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fabrefrederic.business.Commit;
 import com.fabrefrederic.business.File;
 import com.fabrefrederic.business.Issue;
+import com.fabrefrederic.business.dto.IssueDto;
 import com.fabrefrederic.dao.interfaces.CommitDao;
 import com.fabrefrederic.dao.interfaces.IssueDao;
 import com.fabrefrederic.service.interfaces.IssueService;
@@ -30,22 +32,25 @@ public class IssueServiceImpl implements IssueService {
     @Autowired
     private CommitDao commitDao;
 
+    @Autowired
+    private Mapper dozerBeanMapper;
+
     @Override
     @Transactional
-    public TreeSet<Issue> getAffectedIssuesByIssueId(String issueName) {
+    public TreeSet<IssueDto> getAffectedIssuesByIssueId(String issueName) {
         LOGGER.debug("issueName : " + issueName);
-        final TreeSet<Issue> issues = new TreeSet<Issue>();
+        final TreeSet<IssueDto> issues = new TreeSet<IssueDto>();
 
         if (StringUtils.isNotBlank(issueName)) {
-            Issue issue = null;
+            Issue issueSearch = null;
             try {
-                issue = issueDao.findByName(issueName);
+                issueSearch = issueDao.findByName(issueName);
             } catch (final NoResultException noResultException) {
                 // TODO : Display a message to the user
                 LOGGER.info("This issue has not been found - issueName : " + issueName);
             }
-            if (issue != null) {
-                final List<Commit> commits = commitDao.findByIssue(issue);
+            if (issueSearch != null) {
+                final List<Commit> commits = commitDao.findByIssue(issueSearch);
 
                 // Files list from all these commits
                 final Set<File> files = new HashSet<>();
@@ -63,10 +68,13 @@ public class IssueServiceImpl implements IssueService {
                 // Set of issues from these commits
                 for (final Commit commit : commitsOfFiles) {
                     if (commit.getIssue() != null) {
-                        issues.add(commit.getIssue());
+                        final IssueDto issueDto = dozerBeanMapper.map(commit.getIssue(), IssueDto.class);
+                        issueDto.setDescription(commit.getMessage());
+                        issues.add(issueDto);
                     }
                 }
-                issues.remove(issue);
+                final IssueDto issueToRemoveFromSearch = dozerBeanMapper.map(issueSearch, IssueDto.class);
+                issues.remove(issueToRemoveFromSearch);
             }
             LOGGER.debug("issues.size : " + issues.size());
         }

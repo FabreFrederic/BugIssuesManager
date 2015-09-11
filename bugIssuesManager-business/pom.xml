@@ -27,7 +27,6 @@
 			<artifactId>guava</artifactId>
 			<version>${com.google.guava-version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fabrefrederic.business.Issue;
+import com.fabrefrederic.business.dto.IssueDto;
 import com.fabrefrederic.service.interfaces.IssueService;
 import com.fabrefrederic.webapp.form.IssueForm;
 
@@ -30,7 +31,7 @@ public class IssueSearchController {
     public ModelAndView submit(@ModelAttribute("issue") final Issue issue, final BindingResult result,
             final ModelMap model) {
 
-        final Set<Issue> issues = issueService.getAffectedIssuesByIssueId(issue.getName());
+        final Set<IssueDto> issues = issueService.getAffectedIssuesByIssueId(issue.getName());
 
         final ModelAndView modelResult = new ModelAndView("issueSearchResult");
         modelResult.addObject("issueList", issues);

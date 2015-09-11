@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<import
-		resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
+	<import resource="classpath:com/fabrefrederic/dao/spring/applicationContext-dao.xml" />
+	
+	<!-- <bean id="configuration2" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> <property name="location"> <value>classpath:/com/fabrefrederic/library/configuration.xml</value> 
+		</property> </bean> -->
 
-<!--  	<bean id="configuration2"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location">
-			<value>classpath:/com/fabrefrederic/library/configuration.xml</value>
-		</property>
-	</bean> -->
-
-	<bean id="revisionControlSystem"
-		class="com.fabrefrederic.library.impl.SvnRevisionControlSystem">
+	<bean id="revisionControlSystem" class="com.fabrefrederic.library.impl.SvnRevisionControlSystem">
 		<constructor-arg type="java.lang.String" value="http://svn.akio.fr/svn/repos" />
 		<constructor-arg type="java.lang.String" value="" />
 		<constructor-arg type="java.lang.String" value="" />
@@ -29,5 +22,14 @@
 	<bean id="issueService" class="com.fabrefrederic.service.IssueServiceImpl">
 		<property name="issueDao" ref="issueDaoHibernate" />
 		<property name="commitDao" ref="commitDaoHibernate" />
+	</bean>
+
+	<!-- dozer configuration -->
+	<bean id="dozerBeanMapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+		<property name="mappingFiles">
+			<list>
+				<value>classpath:/com/fabrefrederic/service/dozer/dozer.xml</value>
+			</list>
+		</property>
 	</bean>
 </beans>
