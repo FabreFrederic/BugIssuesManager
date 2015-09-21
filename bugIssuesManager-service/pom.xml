@@ -110,7 +110,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fabrefrederic.business.dto</groupId>
+			<groupId>com.fabrefrederic.bugIssuesManager.business.dto</groupId>
 			<artifactId>bugIssuesManager-business-dto</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
