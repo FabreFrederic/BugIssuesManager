@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.fabrefrederic</groupId>
@@ -11,8 +12,9 @@
 	<name>${project.artifactId}</name>
 
 	<properties>
-		<docker.maven.plugin.rhuss.version>0.10.4</docker.maven.plugin.rhuss.version>
-		<maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
+		<docker.maven.plugin.rhuss-version>0.13.6</docker.maven.plugin.rhuss-version>
+		<maven-failsafe-plugin-version>2.18.1</maven-failsafe-plugin-version>
+		<com.fabrefrederic.bugIssuesManager.service-version>0.0.1-SNAPSHOT</com.fabrefrederic.bugIssuesManager.service-version>
 	</properties>
 
 	<dependencies>
@@ -60,7 +62,7 @@
 		<dependency>
 			<groupId>com.fabrefrederic.bugIssuesManager.service</groupId>
 			<artifactId>bugIssuesManager-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${com.fabrefrederic.bugIssuesManager.service-version}</version>
 		</dependency>
 	</dependencies>
 
@@ -97,7 +99,7 @@
 					<plugin>
 						<groupId>org.jolokia</groupId>
 						<artifactId>docker-maven-plugin</artifactId>
-						<version>${docker.maven.plugin.rhuss.version}</version>
+						<version>${docker.maven.plugin.rhuss-version}</version>
 						<configuration>
 							<images>
 								<image>
@@ -189,7 +191,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>${maven-failsafe-plugin.version}</version>
+						<version>${maven-failsafe-plugin-version}</version>
 						<executions>
 							<execution>
 								<id>integration-tests-postgresql</id>
